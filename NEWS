@@ -1,0 +1,195 @@
+==========================================
+modEvA v1.3.2 (committed 2016-07-12)
+==========================================
+
+## Modified functions:
+
+* getBins (affecting HLfit):
+- bug fixed in "bin.method = size.bins", which was giving two different messages regarding ignored arguments
+
+* HLfit:
+- help file slightly clarified
+
+
+==========================================
+modEvA v1.3.1 (committed 2016-06-27)
+==========================================
+
+## Modified functions:
+
+* getBins (affecting HLfit):
+- bug fixed in "bin.method = quantiles", now providing even-sized bins (=SPSS)
+- added argument 'quantile.type', to pass to 'quantile' function
+
+* HLfit:
+- added argument 'quantile.type', to pass to 'quantile' function
+- added argument 'verbosity'
+
+* multModEv:
+- removed default 'thresh' (must be user-specified)
+- replaced argument 'quiet' with 'verbosity' for coherence with other functions
+
+* threshMeasures:
+- removed default 'thresh' (must be user-specified)
+- replaced argument 'messages' with 'verbosity' for coherence with other functions
+
+
+==========================================
+modEvA v1.3 (committed 2016-06-16)
+==========================================
+
+## Modified functions:
+
+* getBins (affecting HLfit):
+- bug fixed in "bin.method = quantiles", removing last additional bin of size 1
+- help file improved to better explain what each bin.method does and what arguments it ignores
+- added argument 'verbosity'
+
+* HLfit:
+- added examples to help file to illustrate differences in bin.methods
+
+
+==========================================
+modEvA v1.2.9 (committed 2016-06-06)
+==========================================
+
+## Modified functions:
+
+* getBins (affecting HLfit):
+- bug fixed in "bin.method = n.bins, fixed.bin.size = TRUE"
+- help file updated to explain what each bin.method does
+- removed default bin.method (must be specified by user)
+
+* multModEv:
+- included '...' for additional arguments to pass to HLfit
+- removed default bin.method (must be specified if HL in measures)
+
+* modEvAmethods:
+- excluded "Miller.p" (previously eliminated from MillerCalib)
+
+
+==========================================
+modEvA v1.2.8 (committed 2016-04-18)
+==========================================
+
+## Modified functions:
+
+* varPart:
+- 'plot.unexpl' now also rounded to 'plot.digits'
+- 'model.type' deprecated (message emitted)
+- AB or ABC now also mandatory, and unexplained var 0, for GLMs
+- help file updated
+
+* plotGLM:
+- warning on preds outside [0,1] now only emitted when appropriate
+
+* AUC, getBins, HLfit, MillerCalib, multModEv, optiPair, optiThresh, plotGLM, threshMeasures:
+- error when model(s) provided but not binomial logit glm
+
+
+==========================================
+modEvA v1.2.7 (committed 2016-04-15)
+==========================================
+
+## Modified functions:
+
+* varPart:
+- added argument 'plot.unexpl = TRUE'
+- explicit error message for 3-factor LM with no ABC
+- help file now with both LM and GLM examples
+- help file now notes that wrong input = wrong result
+
+
+==========================================
+modEvA v1.2.6 (committed 2016-04-13)
+==========================================
+
+## Modified functions:
+
+* AUC:
+- error replaced with warning when pred values outside the [0,1] interval
+- added argument plot.digits = 3 (for plot.values)
+
+* varPart:
+- added arguments 'main' and 'cex.main'
+- slightly increased default cex values
+- updated help file to make GLM use a bit clearer
+
+* plotGLM:
+- error replaced with warning when pred values outside the [0,1] interval
+- added pseudo-R-squared measures to plot.values
+- changed plot.values default to TRUE
+- added argument plot.digits = 3 (for plot.values)
+
+
+==========================================
+modEvA v1.2.5 (committed 2016-03-30)
+==========================================
+
+## Modified functions:
+
+* getBins:
+- eliminated error when pred values outside the [0,1] interval
+
+* HLfit:
+- error replaced with warning on pred values outside the [0,1] interval
+- plot now stretches if pred values exceed [0,1] interval
+
+* MillerCalib:
+- error replaced with warning on pred values outside the [0,1] interval
+- default digits (for plot.values) lowered to 2
+- slope p-value removed (values looked wrong)
+- NaNs avoided by converting 0 and 1 in 'pred' to (1 -) 2e-16
+- increased plot ymax by 0.2
+- changed plot text location to bottom right
+
+
+==========================================
+modEvA v1.2.4 (committed 2016-03-22)
+==========================================
+
+## Modified functions:
+
+* multModEv:
+- warning now emitted, and help file updated, about calibration measures being valid only for probability (when input is obs.data + pred.data)
+
+
+==========================================
+modEvA v1.2.3 (committed 2015-12-10)
+==========================================
+
+## Modified functions:
+
+* prevalence:
+- 'na.rm = TRUE' added
+
+
+==========================================
+modEvA v1.2.2 (committed 2015-11-27)
+==========================================
+
+## Modified functions:
+
+* Dsquared, RsqGLM, plotGLM:
+- NaN-caused errors avoided by converting 0 and 1 in 'pred' to (1 -) 2e-16
+
+
+==========================================
+modEvA v1.2.1 (committed 2015-11-26)
+==========================================
+
+## Modified functions:
+
+* Dsquared, RsqGLM:
+- NaN-caused errors avoided by converting 0 in 'pred' to smallest computable positive number
+
+
+==========================================
+modEvA v1.2
+==========================================
+
+## Modified functions:
+
+* AUC, Dsquared, RsqGLM, threshMeasures, optiPair, HLfit & MillerCalib now omit NAs
+
+* Dsquared based on obs&pred now available also for Poisson GLMs

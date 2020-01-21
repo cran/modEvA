@@ -4,18 +4,18 @@ function(A, B, C = NA, AB, AC = NA, BC = NA, ABC = NA,
          C.name = "Factor C", plot = TRUE, plot.digits = 3, cex.names = 1.5, 
          cex.values = 1.2, main = "", cex.main = 2, plot.unexpl = TRUE) {
   
-  # version 1.6 (18 Apr 2016)
+  # version 1.7 (17 Mar 2017)
 
   if (!is.null(model.type)) message ("NOTE: Argument 'model.type' is no longer used.")
   
   partials <- c(A, B, C, AB, BC, AC, ABC)
-  if (is.finite(partials[c(1:2, 4)]) && is.na(partials[c(3, 5:7)]))  
+  if (all(is.finite(partials[c(1:2, 4)])) && all(is.na(partials[c(3, 5:7)])))  
     twofactors <- TRUE
   else if (all(is.finite(partials)))  
     twofactors <- FALSE
   else stop ("You must provide numeric values for either A, B and AB (for variation partitioning among two factors) or A, B, C, AB, BC, AC and ABC (for variation partitioning among three factors). See Details.")
   
-  if (!all(partials >= 0 & partials <= 1)) stop ("Values must be between 0 and 1.")
+  if (!all(na.omit(partials) >= 0 & na.omit(partials) <= 1)) stop ("Values must be between 0 and 1.")
   
   totalexpl <- ifelse(twofactors, AB, ABC)
   unexpl <- 1 - totalexpl

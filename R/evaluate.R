@@ -1,6 +1,6 @@
 evaluate <-
 function(a, b, c, d, N = NULL, measure = "CCR"){
-  # version 1.1 (24 Jul 2013)
+  # version 1.2 (16 Jan 2020)
   # internal function to be used by others in the package
   # a, b, c, d: elements of the confusion matrix (TP, FP, FN, TN)
   # N: sample size (total number of observations); calculated automatically if NULL
@@ -10,11 +10,11 @@ function(a, b, c, d, N = NULL, measure = "CCR"){
   if(is.null(N))  N <- a + b + c + d
   stopifnot(N == a + b + c + d)
   if(measure == "CCR") { value <- (a+d)/N
-  } else if(measure == "Sensitivity") { value <- a/(a+c)
+  } else if(measure %in% c("Sensitivity", "Recall")) { value <- a/(a+c)
   } else if(measure == "Specificity") { value <- d/(b+d)
   } else if(measure == "Omission") { value <- c/(a+c)
   } else if(measure == "Commission") { value <- b/(b+d)
-  } else if(measure == "PPP") { value <- a/(a+b)  # also called "Precision"
+  } else if(measure %in% c("PPP", "Precision")) { value <- a/(a+b)  # also called "Precision"
   } else if(measure == "NPP") { value <- d/(c+d)
   } else if(measure == "Misclass") { value <- (b+c)/N
   } else if(measure == "UPR") { value <- c/(c+d)  # this and next 3: Barbosa et al. 2013 Diversity and Distributions
@@ -28,6 +28,13 @@ function(a, b, c, d, N = NULL, measure = "CCR"){
                                              +(a+b)*log(a+b)+(c+d)*log(c+d))
                                             /(N*log(N)-((a+c)*log(a+c)
                                                         +(b+d)*log(b+d))))  # NMI by Forbes (1995); the "1-" was missing in Fielding & Bell 1997 (and Manel et al 2001) but Fielding confirmed it was a typo
+  } else if (measure == "F1score") {
+    precision <- a/(a+b)
+    recall <- a/(a+c)
+    numerator <- precision * recall
+    denominator <- precision + recall
+    value <- 2 * (numerator / denominator)
+    value[numerator == 0] <- 0  # euze
   } else if(measure == "OddsRatio") { value <- (a*d)/(c*b)
   # (c*b)/(a*d)  # inverse, would give a (more expectable) unimodal plot of odds against thresholds
   } else stop("Invalid measure; available options are ", 

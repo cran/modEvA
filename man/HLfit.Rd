@@ -7,10 +7,11 @@ Hosmer-Lemeshow goodness of fit
 This function calculates a model's calibration performance (reliability) with the Hosmer & Lemeshow goodness-of-fit statistic, which compares predicted probability to observed occurrence frequency at each portion of the probability range.
 }
 \usage{
-HLfit(model = NULL, obs = NULL, pred = NULL, bin.method, n.bins = 10,
-fixed.bin.size = FALSE, min.bin.size = 15, min.prob.interval = 0.1, 
-quantile.type = 7, simplif = FALSE, verbosity = 2, alpha = 0.05, plot = TRUE, 
-plot.values = TRUE, plot.bin.size = TRUE, xlab = "Predicted probability", 
+HLfit(model = NULL, obs = NULL, pred = NULL, bin.method, 
+n.bins = 10, fixed.bin.size = FALSE, min.bin.size = 15, 
+min.prob.interval = 0.1, quantile.type = 7, simplif = FALSE, 
+verbosity = 2, alpha = 0.05, plot = TRUE, plot.values = TRUE, 
+plot.bin.size = TRUE, xlab = "Predicted probability", 
 ylab = "Observed prevalence", ...)
 }
 \arguments{
@@ -35,9 +36,9 @@ ylab = "Observed prevalence", ...)
   \item{\dots}{further arguments to pass to the \code{\link{plot}} function.}
 }
 \details{
-Most of the commonly used measures for evaluating model performance focus on discrimination capacity, i.e., how well the model is capable of distinguishing presences from absences (after the model's continuous predictions of presence probability or alike are converted to binary predictions of presence or absence). However, there is another important facet of model evaluation: calibration or reliability, i.e., the relationship between predicted probability and observed prevalence (Pearce & Ferrier 2000; Jimenez-Valverde et al. 2013). The \code{HLfit} function measures model reliability with the Hosmer & Lemeshow goodness-of-fit statistic (Hosmer & Lemeshow 1980).
+Most of the commonly used measures for evaluating model performance focus on the discrimination or the classification capacity, i.e., how well the model is capable of distinguishing or classifying presences and absences (often after the model's continuous predictions of presence probability or alike are converted to binary predictions of presence or absence). However, there is another important facet of model evaluation: calibration or reliability, i.e., the relationship between predicted probability and observed occurrence frequency (Pearce & Ferrier 2000; Jimenez-Valverde et al. 2013). The \code{HLfit} function measures model reliability with the Hosmer & Lemeshow goodness-of-fit statistic (Hosmer & Lemeshow 1980).
 
-Note that this statistic has strong limitations and caveats (see e.g. \url{http://www.statisticalhorizons.com/hosmer-lemeshow}, Allison 2014), mainly due to the need to group the values into bins within which to compare probability and prevalence, and the strong influence of the binning method on the results. The \code{HLfit} function can use several binning methods, which are implemented and roughly explained in the \code{\link{getBins}} function and can be accessed by typing \code{modEvAmethods("getBins")}. You should try \code{HLfit} with different binning methods to see how if the results are robust.
+Note that this statistic has strong limitations and caveats (see e.g. http://www.statisticalhorizons.com/hosmer-lemeshow, Allison 2014), mainly due to the need to group the values into bins within which to compare probability and prevalence, and the strong influence of the binning method on the results. The 'HLfit' function can use several binning methods, which are implemented and roughly explained in the \code{\link{getBins}} function and can be accessed by typing 'modEvAmethods("getBins")'. You should try 'HLfit' with different binning methods to see how if the results are robust.
 }
 \value{
 \code{HLfit} returns a list with the following components:
@@ -80,16 +81,20 @@ mod <- rotif.mods$models[[1]]
 
 # try HLfit using different binning methods:
 
-HLfit(model = mod, bin.method = "round.prob", main = "HL GOF with round.prob (n=10)")
+HLfit(model = mod, bin.method = "round.prob", 
+main = "HL GOF with round.prob (n=10)")
 
-HLfit(model = mod, bin.method = "prob.bins", main = "HL GOF with prob.bins (n=10)")
+HLfit(model = mod, bin.method = "prob.bins", 
+main = "HL GOF with prob.bins (n=10)")
 
-HLfit(model = mod, bin.method = "size.bins", main = "HL GOF with size.bins (min size=15)")
+HLfit(model = mod, bin.method = "size.bins", 
+main = "HL GOF with size.bins (min size=15)")
 
 HLfit(model = mod, bin.method = "size.bins", min.bin.size = 30, 
 main = "HL GOF with size.bins min size 30")
 
-HLfit(model = mod, bin.method = "n.bins", main = "HL GOF with 10 bins")
+HLfit(model = mod, bin.method = "n.bins", 
+main = "HL GOF with 10 bins")
 
 HLfit(model = mod, bin.method = "n.bins", fixed.bin.size = TRUE, 
 main = "HL GOF with 10 bins of fixed size")

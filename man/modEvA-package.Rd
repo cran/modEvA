@@ -4,21 +4,21 @@
 \docType{package}
 \title{Model Evaluation and Analysis}
 \description{
-The modEvA package can analyse species distribution models and evaluate their performance. It includes functions for performing variation partitioning, calculating several measures of model discrimination and calibration, optimizing prediction thresholds based on a number of criteria, performing multivariate environmental similarity surface (MESS) analysis, and displaying various analytical plots.
+The modEvA package can analyse species distribution models and evaluate their performance. It includes functions for performing variation partitioning; calculating several measures of model discrimination, classification, explanatory power, and calibration; optimizing prediction thresholds based on a number of criteria; performing multivariate environmental similarity surface (MESS) analysis; and displaying various analytical plots.
 }
 \details{
 \tabular{ll}{
 Package: \tab modEvA\cr
 Type: \tab Package\cr
-Version: \tab 1.3.2\cr
-Date: \tab 2016-07-12\cr
+Version: \tab 2.0\cr
+Date: \tab 2020-01-21 \cr 
 License: \tab GPL-3\cr
 }
 }
 \author{
 Barbosa A.M., Brown J.A., Jimenez-Valverde A., Real R.
 
-A. Marcia Barbosa <barbosa@uevora.pt>
+A. Marcia Barbosa <ana.marcia.barbosa@gmail.com>
 }
 \references{
 Barbosa A.M., Real R., Munoz A.R. & Brown J.A. (2013) New measures for assessing model equilibrium and prediction mismatch in species distribution models. Diversity and Distributions 19: 1333-1338 (DOI: 10.1111/ddi.12100)
@@ -45,7 +45,8 @@ threshMeasures(model = mod, thresh = 0.5)
 threshMeasures(model = mod, thresh = "preval")
 
 # calculate optimal thresholds based on several criteria:
-optiThresh(model = mod)
+optiThresh(model = mod, measures = c("CCR", "Sensitivity", "kappa", "TSS"), 
+ylim = c(0, 1))
 
 # calculate the optimal threshold balancing two evaluation measures:
 optiPair(model = mod, measures = c("Sensitivity", "Specificity"))

@@ -7,10 +7,10 @@ Variation partitioning
 This function performs variation partitioning (Borcard et al. 1992) among two factors (e.g. Ribas et al. 2006) or three factors (e.g. Real et al. 2003) for either multiple linear regression models (LM) or generalized linear models (GLM).
 }
 \usage{
-varPart(A, B, C = NA, AB, AC = NA, BC = NA, ABC = NA, model.type = NULL,
-A.name = "Factor A", B.name = "Factor B", C.name = "Factor C", plot = TRUE, 
-plot.digits = 3, cex.names = 1.5, cex.values = 1.2, main = "", cex.main = 2, 
-plot.unexpl = TRUE)
+varPart(A, B, C = NA, AB, AC = NA, BC = NA, ABC = NA, 
+model.type = NULL, A.name = "Factor A", B.name = "Factor B", 
+C.name = "Factor C", plot = TRUE, plot.digits = 3, cex.names = 1.5, 
+cex.values = 1.2, main = "", cex.main = 2, plot.unexpl = TRUE)
 }
 \arguments{
   \item{A}{numeric value of the R-squared of the regression of the response variable on the variables related to factor 'A'}
@@ -27,19 +27,19 @@ plot.unexpl = TRUE)
 }
   \item{C.name}{character string indicating the name of factor 'C' (if there are 3 factors)}
   \item{plot}{logical, whether to plot the variation partitioning diagram. The default is TRUE.}
-  \item{plot.digits}{integer value of the number of digits to which to \code{round} the values in the plot. The default is 3.}
+  \item{plot.digits}{integer value of the number of digits to which to \code{\link{round}} the values in the plot. The default is 3.}
   \item{cex.names}{numeric value indicating character expansion factor to define the size of the names of the factors displayed in the plot.}
   \item{cex.values}{numeric value indicating character expansion factor to define the size of the values displayed in the plot.}
   \item{main}{optional character string indicating the main title for the plot. The default is empty.}
   \item{cex.main}{numeric value indicating character expansion factor to define the font size of the plot title (if provided).}
-  \item{plot.unexpl}{logical value indicating whether the amount of unexplained variation should be included in the plot. The default is \code{TRUE}.}
+  \item{plot.unexpl}{logical value indicating whether the amount of unexplained variation should be included in the plot. The default is TRUE.}
 }
 \details{
-If you have linear models, input data for \code{varPart} are the coefficients of determination (R-squared values) of the linear regressions of the target variable on all the variables in the model, on the variables related to each particular factor, and (when there are 3 factors) on the variables related to each pair of factors. The outputs are the amounts of variance explained exclusively by each factor, the amounts explained exclusively by the overlapping effects of each pair of factors, and the amount explained by the overlap of the 3 factors if this is the case (e.g. Real et al. 2003). The amount of variation not explained by the complete model is also provided.
+If you have linear models, input data for 'varPart' are the coefficients of determination (R-squared values) of the linear regressions of the target variable on all the variables in the model, on the variables related to each particular factor, and (when there are 3 factors) on the variables related to each pair of factors. The outputs are the amounts of variance explained exclusively by each factor, the amounts explained exclusively by the overlapping effects of each pair of factors, and the amount explained by the overlap of the 3 factors if this is the case (e.g. Real et al. 2003). The amount of variation not explained by the complete model is also provided.
 
 If you have generalized linear models (GLMs) such as logistic regression (see \code{\link{glm}}), you have no true R-squared values; inputs can then be the squared coefficients of correlation between the model predictions given by each factor (or pair of factors) and the predictions of the complete model (e.g. Munoz & Real 2006), or the R-squared values of the corresponding logit (y) functions (Real et al. 2013), or an adjusted R-squared (De Araujo et al. 2013). In these cases, the "total variation" (AB or ABC, depending on whether you have two or three factors) is 1 (correlation of the predictions of the complete model with themselves), and output values are not the total amounts of variance (of the target variable) explained by factors and overlaps, but rather their proportional contribution to the total variation explained by the model.}
 \value{
-The output consists of a data frame indicating the proportion of variance accounted for by each of the factors, and (if \code{plot = TRUE}) a Venn diagram of the contributions of each factor.
+The output consists of a data frame indicating the proportion of variance accounted for by each of the factors, and (if 'plot = TRUE') a Venn diagram of the contributions of each factor.
 }
 \references{
 Borcard D., Legendre P., Drapeau P. (1992) Partialling out the spatial component of ecological variation. Ecology 73: 1045-1055
@@ -72,13 +72,13 @@ C.name = "Environmental", main = "Small whale")
 
 
 # if you have a generalized linear model (GLM), 
-# you can use squared correlation coefficients 
-# of the predictions of each factor with those of the complete model:
+# you can use squared correlation coefficients of the
+# predictions of each factor with those of the complete model:
 
 varPart(A = (-0.005)^2, B = 0.698^2, C = 0.922^2, AB = 0.696^2, 
 BC = 0.994^2, AC = 0.953^2, ABC = 1, A.name = "Topographic", 
 B.name = "Climatic", C.name = "Geographic", main = "Big bird")
 
-# but "Unexplained variation" can be deceiving in these cases (see Details)
-# try also adding 'plot.unexpl = FALSE'
+# but "Unexplained variation" can be deceiving in these cases
+# (see Details); try also adding 'plot.unexpl = FALSE'
 }

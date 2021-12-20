@@ -1,17 +1,20 @@
-predDensity <- function(model = NULL, obs = NULL, pred = NULL, separate = TRUE, type = c("both"), legend.pos = "topright") {
-  # version 1.0 (9 Jan 2020)
+predDensity <- function(model = NULL, obs = NULL, pred = NULL, separate = TRUE, type = c("both"), legend.pos = "topright", main = "Density of predicted values") {
+  # version 1.3 (26 Nov 2021)
   
   if (!is.null(model)) {
-    if (!("glm" %in% class(model)) || family(model)$family != "binomial") stop("'model' must be of class 'glm' and family 'binomial'.")
+    #if (!("glm" %in% class(model)) || family(model)$family != "binomial") stop("'model' must be of class 'glm' and family 'binomial'.")
     if (!is.null(obs)) message("Argument 'obs' ignored in favour of 'model'.")
     if (!is.null(pred)) message("Argument 'pred' ignored in favour of 'model'.")
-    obs <- model$y
-    pred <- model$fitted.values
+    # obs <- model$y
+    # pred <- model$fitted.values
+    obspred <- mod2obspred(model)
+    obs <- obspred[ , "obs"]
+    pred <- obspred[ , "pred"]
   }
   
   if (is.null(obs)) {
     if (is.null(pred)) stop ("You must provide either 'model' or 'pred'.")
-    #if (separate) message("'obs' not provided, so 'separate' automatically set to FALSE.")
+    # if (separate) message("'obs' not provided, so 'separate' automatically set to FALSE.")
     separate <- FALSE
     obs <- sample(c(0, 1), length(pred), replace = TRUE)  # dummy variable
   } else {
@@ -44,7 +47,7 @@ predDensity <- function(model = NULL, obs = NULL, pred = NULL, separate = TRUE, 
       rslt[["density_obs1"]] <- dens1
       rslt[["density_obs0"]] <- dens0
     }
-    plot(x = xrange, y = yrange, xlab = "Predicted value", ylab = "Density", type = "n")
+    plot(x = xrange, y = yrange, xlab = "Predicted value", ylab = "Density", type = "n", main = main)
   }
   
   if (type %in% c("histogram", "both")) {  # "histogram" %in% type
@@ -53,7 +56,7 @@ predDensity <- function(model = NULL, obs = NULL, pred = NULL, separate = TRUE, 
     hist1 <- hist(pred1, plot = FALSE)
     if (type == "histogram") {  # !("density" %in% type)
       yrange <- range(hist0$density, hist1$density, finite = TRUE)
-      plot(x = c(0, 1), y = yrange, type = "n", xlab = "Predicted value", ylab = "Density")
+      plot(x = c(0, 1), y = yrange, type = "n", xlab = "Predicted value", ylab = "Density", main = main)
     }
     if (!separate) {
       histogram <- hist(c(pred0, pred1), freq = FALSE, col = "grey20", add = TRUE)
@@ -73,8 +76,8 @@ predDensity <- function(model = NULL, obs = NULL, pred = NULL, separate = TRUE, 
     } else {
       lines(dens1, col = "black", lwd = 2)
       lines(dens0, col = "darkgrey", lty = 5, lwd = 2)
-      if (legend.pos != "n" && type == "density") legend(legend.pos, legend = c("absences", "presences"), col = c("darkgrey", "black"), lty = c(5, 1), bty = "n")
-      if (legend.pos != "n" && type == "both") legend(legend.pos, legend = c("absences", "presences"), fill = c("darkgrey", "grey20"), border = NA, lty = c(5, 1), col = c("darkgrey", "grey15"), density = c(40, NA), bty = "n")
+      if (!is.na(legend.pos) && legend.pos != "n" && type == "density") legend(legend.pos, legend = c("absences", "presences"), col = c("darkgrey", "black"), lty = c(5, 1), bty = "n")
+      if (!is.na(legend.pos) && legend.pos != "n" && type == "both") legend(legend.pos, legend = c("absences", "presences"), fill = c("darkgrey", "grey20"), border = NA, lty = c(5, 1), col = c("darkgrey", "grey15"), density = c(40, NA), bty = "n")
     }
   }
   

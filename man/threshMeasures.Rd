@@ -10,19 +10,20 @@ This function calculates a number of measures for evaluating the classification 
 threshMeasures(model = NULL, obs = NULL, pred = NULL, thresh,
 measures = modEvAmethods("threshMeasures"), simplif = FALSE, 
 plot = TRUE, plot.ordered = FALSE, standardize = TRUE, 
-verbosity = 2, ...)
+verbosity = 2, ylim = c(0, 1), ...)
 }
 \arguments{
-  \item{model}{a model object of class "glm".}
-  \item{obs}{a vector of observed presences (1) and absences (0) or another binary response variable. Not necessary (and ignored) if 'model' is provided.}
-  \item{pred}{a vector with the corresponding predicted values of presence probability, habitat suitability, environmental favourability or alike. Not necessary (and ignored) if 'model' is provided.}
-  \item{thresh}{numeric value of the threshold to separate predicted presences from predicted absences in 'pred'; can be "preval", to use the prevalence of 'obs' as the threshold, or any real number between 0 and 1.  See Details for an informed choice.}
+  \item{model}{a binary-response model object of class "glm", "gam", "gbm", "randomForest" or "bart". If provided, 'obs' and 'pred' will be extracted with \code{\link{mod2obspred}}. Alternatively, you can input the 'obs' and 'pred' arguments instead of 'model'.}
+  \item{obs}{alternatively to 'model' and together with 'pred', a vector of observed presences (1) and absences (0) of a binary response variable. This argument is ignored if 'model' is provided.}
+  \item{pred}{alternatively to 'model' and together with 'obs', a vector with the corresponding predicted values of presence probability, habitat suitability, environmental favourability or alike. Must be of the same length and in the same order as 'obs'. This argument is ignored if 'model' is provided.}
+  \item{thresh}{numeric value of the threshold to separate predicted presences from predicted absences in 'pred'; can be "preval", to use the prevalence of 'obs' as the threshold, or any real number between 0 and 1. See Details for an informed choice.}
   \item{measures}{character vector of the evaluation measures to use. By default, all measures available in 'modEvAmethods("threshMeasures")' are calculated.}
   \item{simplif}{logical, whether to calculate a faster, simplified version. Used internally by other functions in the package. Defaults to FALSE.}
   \item{plot}{logical, whether to produce a barplot of the calculated measures. Defaults to TRUE.}
   \item{plot.ordered}{logical, whether to plot the measures in decreasing order rather than in input order. Defaults to FALSE.}
   \item{standardize}{logical, whether to change measures that may range between -1 and +1 (namely kappa and TSS) to their corresponding value in the 0-to-1 scale (skappa and sTSS), so that they can compare directly to other measures (see \code{\link{standard01}}). The default is TRUE, but a message is displayed to inform the user about it.}
   \item{verbosity}{integer specifying the amount of messages to display. Defaults to the maximum implemented; lower numbers (down to 0) decrease the number of messages.}
+  \item{ylim}{limits for the y axis.}
   \item{\dots}{additional arguments to be passed to the \code{\link{plot}} function.}
 }
 \details{
@@ -68,7 +69,7 @@ Real R., Barbosa A.M. & Vargas J.M. (2006) Obtaining environmental favourability
 A. Marcia Barbosa
 }
 \note{
-Some of these measures (like NMI, UPR, OPR, PPP, NPP) cannot be calculated for thresholds at which there are zeros in the confusion matrix.
+"Sensitivity" is the same as "Recall", and "PPP" (positive predictive power) is the same as "Precision". Some of these measures (like NMI, UPR, OPR, PPP, NPP) cannot be calculated for thresholds at which there are zeros in the confusion matrix, so they can yield NaN values.
 }
 \seealso{
 \code{\link{optiThresh}}, \code{\link{optiPair}}, \code{\link{AUC}}

@@ -1,17 +1,28 @@
-AUC <- function(model = NULL, obs = NULL, pred = NULL, simplif = FALSE, interval = 0.01, FPR.limits = c(0, 1), curve = "ROC",  method = "rank", plot = TRUE, diag = TRUE, diag.col = "grey", diag.lty = 1, curve.col = "black", curve.lty = 1, curve.lwd = 2, plot.values = TRUE, plot.digits = 3, plot.preds = FALSE, grid = FALSE, xlab = "auto", ylab = "auto", ...) {
-  # version 2.2 (17 Jan 2020)
+AUC <- function(model = NULL, obs = NULL, pred = NULL, simplif = FALSE, interval = 0.01, FPR.limits = c(0, 1), curve = "ROC", method = "rank", plot = TRUE, diag = TRUE, diag.col = "grey", diag.lty = 1, curve.col = "black", curve.lty = 1, curve.lwd = 2, plot.values = TRUE, plot.digits = 3, plot.preds = FALSE, grid = FALSE, xlab = "auto", ylab = "auto", ticks = FALSE, ...) {
+  # version 2.5 (26 Nov 2021)
   
   if (all.equal(FPR.limits, c(0, 1)) != TRUE) stop ("Sorry, 'FPR.limits' not yet implemented. Please use default values.")
   
-  if (length(obs) != length(pred))  stop ("'obs' and 'pred' must be of the same length (and in the same order).")
+  if (model == NULL && length(obs) != length(pred))  stop ("'obs' and 'pred' must be of the same length (and in the same order).")
   
   if (!is.null(model)) {
-    if(!("glm" %in% class(model) && model$family$family == "binomial" && model$family$link == "logit")) stop ("'model' must be an object of class 'glm' with 'binomial' family and 'logit' link.")
+    #if(!("glm" %in% class(model) && model$family$family == "binomial" && model$family$link == "logit")) stop ("'model' must be an object of class 'glm' with 'binomial' family and 'logit' link.")
     if (!is.null(obs)) message("Argument 'obs' ignored in favour of 'model'.")
     if (!is.null(pred)) message("Argument 'pred' ignored in favour of 'model'.")
-    obs <- model$y
-    pred <- model$fitted.values
+    # obs <- model$y
+    # pred <- model$fitted.values
+    obspred <- mod2obspred(model)
+    obs <- obspred[ , "obs"]
+    pred <- obspred[ , "pred"]
   }  # end if model
+  
+  if (any(pred < 0) || any(pred > 1)) warning("Some of your predicted values are outside the [0, 1] interval within which thresholds are calculated.")
+  
+  incalculable <- FALSE
+  if (all(obs == 0) || all(obs == 1)) {
+    incalculable <- TRUE
+    warning("AUC can't be computed if there aren't two response states (i.e. ones and zeros) to compare their predictions.")
+  }
   
   dat <- data.frame(obs, pred)
   n.in <- nrow(dat)
@@ -31,13 +42,18 @@ AUC <- function(model = NULL, obs = NULL, pred = NULL, simplif = FALSE, interval
     method %in% c("rank", "trapezoid", "integrate")
   )
   
+  if (method == "integrate") {
+    if (!incalculable) warning("'integrate' method no longer supported; using default 'rank' method for ROC or 'trapezoid' for PR curve.")
+    method <- ifelse(curve == "ROC", "rank", "trapezoid")
+  }
+  
+  if (method == "rank" && curve != "ROC") {
+    if (!incalculable) warning("'rank' method not applicable to the specified 'curve'; using 'trapezoid' method instead.")
+    method <- "trapezoid"
+  }
+  
   n1 <- sum(obs == 1)
   n0 <- sum(obs == 0)
-  
-  if (curve != "ROC" && method == "rank") {
-    method <- "trapezoid"
-    #message("'rank' method not applicable to the specified 'curve'; using 'trapezoid' instead.")
-  }
   
   if (method == "rank") {
     # next 3 lines from Wintle et al 2005 supp mat "roc" function
@@ -46,11 +62,9 @@ AUC <- function(model = NULL, obs = NULL, pred = NULL, simplif = FALSE, interval
     AUC <- ((n0 * n1) + ((n0 * (n0 + 1))/2) - sum(rnk[1 : n0])) / (n0 * n1)
     if (simplif && !plot) return(AUC)
   }
-
-  if (any(pred < 0) | any(pred > 1)) warning("Some of your predicted values are outside the [0, 1] interval within which thresholds are calculated.")
   
   N <- length(obs)
-  preval <- prevalence(obs)
+  preval <- suppressWarnings(prevalence(obs))
   thresholds <- seq(0, 1, by = interval)
   Nthresh <- length(thresholds)
   true.positives <- true.negatives <- sensitivity <- specificity <- precision <- false.pos.rate <- n.preds <- prop.preds <- numeric(Nthresh)
@@ -69,7 +83,7 @@ AUC <- function(model = NULL, obs = NULL, pred = NULL, simplif = FALSE, interval
   }
   
   precision_mean <- mean(precision, na.rm = TRUE)
-    
+  
   if (curve == "ROC") {
     xx <- false.pos.rate
     yy <- sensitivity
@@ -83,21 +97,36 @@ AUC <- function(model = NULL, obs = NULL, pred = NULL, simplif = FALSE, interval
   }
   
   if (method == "trapezoid") {
-    xy <- na.omit(data.frame(xx, yy))
-    #if (length(xx) != nrow(xy)) warning("Some non-finite values omitted from area calculation.")
+    
+    if (curve == "ROC" && !incalculable) warning ("AUC value will be more accurate if method = 'rank', or if 'interval' is decreased -- see 'interval' and 'method' arguments in the function help file.")
+    else if (interval >= 0.01 && !incalculable) warning ("AUC value will be more accurate if 'interval' is decreased -- see 'interval' and 'method' arguments in the function help file.")
+    
+    xy <- data.frame(xx, yy)
+    #xy <- na.omit(data.frame(xx, yy))  # this caused inaccurate AUC-PR values, as per bug report by Tessa Chen
+    #if (length(xx) != nrow(xy))  warning(paste(abs(length(xx) - nrow(xy)), "non-finite value(s) omitted from area calculation."))
     xx <- xy$xx
     yy <- xy$yy
     # next line adapted from https://stackoverflow.com/a/22418496:
     AUC <- sum(diff(xx) * (yy[-1] + yy[-length(yy)]) / 2)
     AUC <- -AUC  # euze
-  }
+    
+    if (curve == "PR" && any(is.nan(yy))) {  # added Oct 30 2021 following bug report by Ying-Ju Tessa Chen, which caused wrong area calculation when curve extreme was NaN
+      if(!incalculable) warning(paste(sum(is.nan(yy)), "point(s) with NaN precision value (see 'precision' column in the $thresholds section of your returned results if simplif=FALSE); coercing to last non-NaN value to interpolate curve for AUC calculation"))
+      last_thresh_with_value <- max(which(!is.nan(yy)))
+      yy_noNaN <- yy
+      yy_noNaN[is.nan(yy)] <- yy_noNaN[last_thresh_with_value]
+      # next line adapted from https://stackoverflow.com/a/22418496:
+      AUC <- sum(diff(xx) * (yy_noNaN[-1] + yy_noNaN[-length(yy_noNaN)]) / 2)
+      AUC <- -AUC  # euze
+    }  # end if NaN precision
+  }  # end if trapezoid
   
-    if (method == "integrate") {
-    xx.interp <- stats::approx(x = thresholds, y = xx, n = length(thresholds))
-    yy.interp <- stats::approx(x = thresholds, y = yy, n = length(thresholds))
-    f <- approxfun(x = xx.interp$y, y = yy.interp$y)
-    AUC <- integrate(f, lower = min(thresholds), upper = max(thresholds))$value
-    }
+  # if (method == "integrate") {  # deactivated for producing less accurate values (compared to 'rank' method for 'ROC' curve)
+  # xx.interp <- stats::approx(x = thresholds, y = xx, n = length(thresholds))
+  # yy.interp <- stats::approx(x = thresholds, y = yy, n = length(thresholds))
+  # f <- approxfun(x = xx.interp$y, y = yy.interp$y)
+  # AUC <- integrate(f, lower = min(thresholds), upper = max(thresholds))$value
+  # }
   
   if (plot) {
     if (curve == "ROC") {
@@ -115,20 +144,22 @@ AUC <- function(model = NULL, obs = NULL, pred = NULL, simplif = FALSE, interval
     
     if (grid) abline(h = thresholds, v = thresholds, col = "lightgrey")
     
+    if (curve == "PR" && any(is.nan(yy))) lines(x = xx, y = yy_noNaN, col = "coral", lty = 3, lwd = min(1, curve.lwd))  # plots the interpolated (noNaN) curve underneath the curve with actual precision values
     lines(x = xx, y = yy, col = curve.col, lty = curve.lty, lwd = curve.lwd)
     
-    if (plot.preds == TRUE) plot.preds <- c("curve", "bottom")  # for back-compatibility
+    # if (plot.preds == TRUE) plot.preds <- c("curve", "bottom")  # for back-compatibility
     if ("bottom" %in% plot.preds) {
-      points(x = thresholds, y = rep(0, Nthresh), cex = 100 * prop.preds, col = "darkgrey")  # 20 * sqrt(prop.preds)
+      points(x = xx, y = rep(0, Nthresh), cex = 20 * sqrt(prop.preds), pch = 21, col = "darkgrey", bg = rgb(red = 0, green = 0, blue = 1, alpha = 0.2))  # cex = 100 * prop.preds
     }
-    if ("curve" %in% plot.preds) {
-      points(x = xx, y = yy, cex = 100 * prop.preds, col = "darkgrey")
+    if ("curve" %in% plot.preds || plot.preds == TRUE) {
+      points(x = xx, y = yy, cex = 20 * sqrt(prop.preds), pch = 21, col = "darkgrey", bg = rgb(red = 0, green = 0, blue = 1, alpha = 0.2))  # cex = 100 * prop.preds
     }
+    if (ticks == TRUE) axis(1, at = xx, labels = NA, tick = TRUE, tck = 0.03, col = NA, col.ticks = "blue")
     
     if (plot.values) {
-      if (curve == "ROC") text(1, 0.4, adj = 1, substitute(paste(AUC == a), list(a = round(AUC, plot.digits))))
+      if (curve == "ROC") text(0.5, 0.1, substitute(paste(AUC == a), list(a = round(AUC, plot.digits))))
       #if (curve == "PR") text(1, 1, adj = 1, substitute(paste(expression('AUC'['PR']) == a), list(a = round(AUC, plot.digits))))
-      if (curve == "PR") text(1, 1, adj = 1, substitute(paste('AUC'['PR'] == a), list(a = round(AUC, plot.digits))))
+      if (curve == "PR") text(0.5, 0.1, substitute(paste('AUC'['PR'] == a), list(a = round(AUC, plot.digits))))
     }  # end if plot.values
     
   }  # end if plot

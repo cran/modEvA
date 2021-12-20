@@ -5,15 +5,16 @@
 This function calculates some (pseudo) R-squared statistics for binomial Generalized Linear Models.
 }
 \usage{
-RsqGLM(model = NULL, obs = NULL, pred = NULL, 
-use = "pairwise.complete.obs")
+RsqGLM(model = NULL, obs = NULL, pred = NULL, use = "pairwise.complete.obs",
+plot = TRUE, ...)
 }
 \arguments{
-  \item{model}{a model object of class "glm".}
-  \item{obs}{a vector of observed presences (1) and absences (0) or another
-  binary response variable. Not necessary (and ignored) if \code{model} is provided.}
-  \item{pred}{a vector with the corresponding predicted values of presence probability. Must be of the same length and in the same order as \code{obs}. Not necessary (and ignored) if \code{model} is provided.}
+  \item{model}{a binary-response model object of class "glm". Alternatively, you can input the 'obs' and 'pred' arguments instead of 'model'.}
+  \item{obs}{alternatively to 'model' and together with 'pred', a vector of observed presences (1) and absences (0) of a binary response variable. This argument is ignored if 'model' is provided.}
+  \item{pred}{alternatively to 'model' and together with 'obs', a vector with the corresponding predicted values of presence probability. Must be of the same length and in the same order as 'obs'. This argument is ignored if 'model' is provided.}
   \item{use}{argument to be passed to \code{\link{cor}} for handling mising values.}
+  \item{plot}{logical value indicating whether or not to display a barplot of the calculated measures.}
+  \item{\dots}{additional arguments to pass to the \code{\link{plot}} function (see Examples).}
 }
 \details{
 Implemented measures include the R-squareds of McFadden (1974), Cox-Snell (1989), Nagelkerke (1991, which corresponds to the corrected Cox-Snell, eliminating its upper bound), and Tjur (2009). See Allison (2014) for a brief review of these measures.
@@ -49,4 +50,11 @@ RsqGLM(model = mod)
 # instead of a model object:
 
 RsqGLM(obs = mod$y, pred = mod$fitted.values)
+
+
+# plotting arguments can be modified:
+
+RsqGLM(obs = mod$y, pred = mod$fitted.values, col = "seagreen", border = NA, 
+ylim = c(0, 1), las = 2, main = "Pseudo-R-squared values")
+
 }

@@ -1,5 +1,184 @@
 ==========================================
-modEvA v2.0 (committed 2020-01-21)
+modEvA v3.0 (committed 2021-12-20) -> CRAN
+==========================================
+
+## Modified functions:
+
+* AUC
+- warning if 'obs' contains only zeros or only ones (to explain result NaN and no curve on plot)
+- if the previous occurs, other warnings suppressed (PR curve interpolated past NaN precision, method changed to 'trapezoid', etc.)
+
+* MillerCalib
+- plot text elevated by 0.05 y-axis units, to avoid it being cropped in small plots
+
+
+## Other changes:
+
+- uniformized description of arguments "model", "obs" and "pred" across functions' help files
+
+
+==========================================
+modEvA v2.8 (committed 2021-12-03)
+==========================================
+
+## Modified functions:
+
+* optiPair
+- message "'pred' must range between 0 and 1" changed from error to warning
+- added argument 'na.rm' (default TRUE) to avoid NaNs in result MinDiff, MaxSum, etc.
+- added argument 'exclude.zeros' (default TRUE) to avoid precision-recall "optimal" difference when both 0 or NaN
+
+
+==========================================
+modEvA v2.7 (committed 2021-11-26)
+==========================================
+
+## New functions:
+
+* confusionLabel (to map the confusion matrix)
+
+* mod2obspred (to extract 'obs' and 'pred' from model objects)
+
+
+## Modified functions:
+
+* prevalence
+- message "'event' is not among of the values of 'obs'" changed from error to warning
+- 'mod2obspred' now used for extracting 'obs' if 'model' is provided
+
+* AUC, getBins, HLfit, MillerCalib, optiPair, optiThresh, predDensity, predPlot, threshMeasures
+- 'model' can now be of class "glm", "gam", "gbm", "randomForest" or "bart"
+- 'mod2obspred' now used for extracting 'obs' and 'pred' if 'model' is provided
+
+
+==========================================
+modEvA v2.6 (committed 2021-11-01)
+==========================================
+
+## Modified functions:
+
+* predDensity
+- added 'main' argument for plot title
+
+* predPlot
+- added 'pch' and 'col' arguments for the plot
+- legend.pos is now "n" by default (legend was ugly and needed box to distinguish from actual plot points)
+
+* RsqGLM
+- added "plot" argument (default TRUE)
+- added '...' for additional parameters for 'plot'
+
+* plotGLM
+- added 'plot=FALSE' to 'RsqGLM' (used if 'plot.values')
+
+* optiThresh
+- slightly changed plot margins so that bottom axis values are visible
+
+
+## Other modified files:
+
+* www/modEvA-tutorial.html
+- updated with these recent options
+
+
+==========================================
+modEvA v2.5 (committed 2021-10-31)
+==========================================
+
+## Modified functions:
+
+* AUC
+- plot.preds=TRUE now plots filled circles with transparency
+- plot.preds=TRUE now defaults to plotting circles on the curve (rather than both curve and bottom)
+- size of circles if plot.preds=TRUE changed from 100*prop.preds to 20*sqrt(prop.preds)
+- x coordinates of circles if plot.preds=TRUE changed from 'thresholds' to 'xx'
+- if plot.values=TRUE, value is now plotted on the middle bottom for ROC and middle top for PR curve
+- NaN precision values now coerced to the last non-NaN value (rather than 1), and warning emitted
+- interpolated (NaN precision) part of the PR curve now plotted besides the curve with actual precision values
+
+
+==========================================
+modEvA v2.4 (committed 2021-10-30)
+==========================================
+
+## Modified functions:
+
+* AUC
+- fixed wrong PR area when last precision value(s) NaN, by coercing NaN precisions to 1 (thanks to bug report by Ying-Ju Tessa Chen)
+- deactivated option method = "integrate", which was providing somewhat inaccurate values
+- added / improved warning messages when 'method' changed to match chosen 'curve'
+- added warning when method = "trapezoid" and interval >= 0.01, noting result is more accurate with smaller intervals
+
+* threshMeasures
+- added 'ylim' argument with default c(0, 1) to avoid error when no selected measure has finite values 
+
+
+## Other modified files:
+
+* inst/CITATION
+- corrected publication year of 'New measures' paper under 'textVersion' of citation (thanks to bug report by Alba Estrada)
+
+
+==========================================
+modEvA v2.3 (committed 2021-09-30)
+==========================================
+
+## Modified functions:
+
+* prevalence
+- added 'model' argument, which can now be provided instead of 'obs'
+- help file includes examples with 'model' and with character 'obs' 
+- error message when 'obs' not a vector and when 'event' not in 'obs'
+- warning when 'obs' ignored in favour of 'model'
+
+
+==========================================
+modEvA v2.2 (committed 2021-09-08)
+==========================================
+
+## Modified functions:
+
+* MillerCalib
+- slope value now plotted before (above) intercept (if plot.values = TRUE)
+
+* varPart
+- fixed right margin in 2-factor plot and added option for colouring the circles, following suggestions by Oswald van Ginkel
+
+* MESS
+- bug fix e-mailed by Huijie Qiao
+
+
+==========================================
+modEvA v2.1 (committed 2021-01-15)
+==========================================
+
+## New functions:
+
+* predPlot
+
+
+## Modified functions:
+
+* predDensity
+- like 'predPlot', 'legend.pos' now allows NA (for no legend) instead of throwing obscure error
+
+* optiThresh
+- added warning when any of 'measures' or 'optimize' not within implemented values
+
+
+## Other modified files:
+
+* MESS.Rd
+- removed mention that we will implement ExDet for dataframes; added 'ecospat.climan' to 'See also'
+
+
+## Other changes:
+
+* minor corrections to some 'man' files
+
+
+==========================================
+modEvA v2.0 (committed 2020-01-21) -> CRAN
 ==========================================
 
 ## Modified functions:

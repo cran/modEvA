@@ -8,17 +8,19 @@ This function produces a histogram and/or a kernel density plot of predicted val
 }
 \usage{
 predDensity(model = NULL, obs = NULL, pred = NULL, separate = TRUE, 
-type = c("both"), legend.pos = "topright", main = "Density of predicted values")
+type = c("both"), legend.pos = "topright", main = "Density of predicted values",
+na.rm = TRUE, rm.dup = FALSE)
 }
 \arguments{
-  \item{model}{a binary-response model object of class "glm", "gam", "gbm", "randomForest" or "bart". If provided, 'obs' and 'pred' will be extracted with \code{\link{mod2obspred}}. Alternatively, you can input the 'obs' and 'pred' arguments instead of 'model'.}
-  \item{obs}{alternatively to 'model' and together with 'pred', a vector of observed presences (1) and absences (0) of a binary response variable. This argument is ignored if 'model' is provided.}
-  \item{pred}{alternatively to 'model' and together with 'obs', a vector with the corresponding predicted values of presence probability, habitat suitability, environmental favourability or alike. Must be of the same length and in the same order as 'obs'. This argument is ignored if 'model' is provided.}
-  \item{separate}{logical value indicating whether prediction densities should be computed separately for observed presences (ones) and absences (zeros). Defaults to TRUE, but is changed to FALSE if either 'model' or 'obs' not provided.}
+  \item{model}{a binary-response model object of class "glm", "gam", "gbm", "randomForest" or "bart". If this argument is provided, 'obs' and 'pred' will be extracted with \code{\link{mod2obspred}}. Alternatively, you can input the 'obs' and 'pred' arguments instead of 'model'.}
+  \item{obs}{alternatively to 'model' and together with 'pred', a numeric vector of observed presences (1) and absences (0) of a binary response variable. Alternatively (and if 'pred' is a 'SpatRaster'), a two-column matrix or data frame containing, respectively, the x (longitude) and y (latitude) coordinates of the presence points, in which case the 'obs' vector will be extracted with \code{\link{ptsrast2obspred}}. This argument may be omitted (to show the density plot of all 'pred' values combined), and it is ignored if 'model' is provided.}
+  \item{pred}{alternatively to 'model' (and optionally together with 'obs'), a vector with the corresponding predicted values of presence probability, habitat suitability, environmental favourability or alike. Must be of the same length and in the same order as 'obs' (if the latter is provided). Alternatively (and if 'obs' is a set of point coordinates), a 'SpatRaster' map of the predicted values for the entire evaluation region, in which case the 'pred' vector will be extracted with \code{\link{ptsrast2obspred}}. This argument is ignored if 'model' is provided.}
+  \item{separate}{logical value indicating whether prediction densities should be computed separately for observed presences (ones) and absences (zeros). Defaults to TRUE, but is necessarily changed to FALSE if either 'model' or 'obs' are not provided.}
   \item{type}{character vector specifying whether to produce a "histogram", a "density" plot, or "both" (the default). Partial argument matching is used.}
   \item{legend.pos}{character specifying the position for the legend; NA or "n" for no legend. Position can be "topright" (the default), "topleft, "bottomright"", "bottomleft", "top", "bottom", "left", "right", or "center". Partial argument matching is used.}
-    \item{main}{main title for the plot.}
-
+  \item{main}{main title for the plot.}
+  \item{na.rm}{Logical value indicating whether missing values should be ignored in computations. Defaults to TRUE.}
+  \item{rm.dup}{If \code{TRUE} and if 'pred' is a SpatRaster and if there are repeated points within the same pixel, a maximum of one point per pixel is used to compute the presences. See examples in \code{\link{ptsrast2obspred}}. The default is FALSE.}
 }
 \details{
 For more details, please refer to the documentation of the functions mentioned under "See Also".
@@ -54,4 +56,8 @@ prediction <- mod$fitted.values
 predDensity(obs = presabs, pred = prediction)
 
 predDensity(pred = prediction)
+
+
+# 'obs' can also be a table of presence point coordinates
+# and 'pred' a SpatRaster of predicted values
 }

@@ -8,12 +8,12 @@ This function calculates Miller's (1991) calibration statistics for a generalize
 MillerCalib(model = NULL, obs = NULL, pred = NULL, plot = TRUE,
 line.col = "black", diag = TRUE, diag.col = "grey", 
 plot.values = TRUE, digits = 2, xlab = "", ylab = "", 
-main = "Miller calibration", ...)
+main = "Miller calibration", na.rm = TRUE, rm.dup = FALSE, ...)
 }
 \arguments{
-  \item{model}{a binary-response model object of class "glm", "gam", "gbm", "randomForest" or "bart". If provided, 'obs' and 'pred' will be extracted with \code{\link{mod2obspred}}. Alternatively, you can input the 'obs' and 'pred' arguments instead of 'model'.}
-  \item{obs}{alternatively to 'model' and together with 'pred', a vector of observed presences (1) and absences (0) of a binary response variable. This argument is ignored if 'model' is provided.}
-  \item{pred}{alternatively to 'model' and together with 'obs', a vector with the corresponding predicted values of presence probability. Must be of the same length and in the same order as 'obs'. This argument is ignored if 'model' is provided.}
+  \item{model}{a binary-response model object of class "glm", "gam", "gbm", "randomForest" or "bart". If this argument is provided, 'obs' and 'pred' will be extracted with \code{\link{mod2obspred}}. Alternatively, you can input the 'obs' and 'pred' arguments instead of 'model'.}
+  \item{obs}{alternatively to 'model' and together with 'pred', a numeric vector of observed presences (1) and absences (0) of a binary response variable. Alternatively (and if 'pred' is a 'SpatRaster'), a two-column matrix or data frame containing, respectively, the x (longitude) and y (latitude) coordinates of the presence points, in which case the 'obs' vector will be extracted with \code{\link{ptsrast2obspred}}. This argument is ignored if 'model' is provided.}
+  \item{pred}{alternatively to 'model' and together with 'obs', a vector with the corresponding predicted values of presence probability, habitat suitability, environmental favourability or alike. Must be of the same length and in the same order as 'obs'. Alternatively (and if 'obs' is a set of point coordinates), a 'SpatRaster' map of the predicted values for the entire evaluation region, in which case the 'pred' vector will be extracted with \code{\link{ptsrast2obspred}}. This argument is ignored if 'model' is provided.}
   \item{plot}{logical, whether or not to produce a plot of the Miller regression line. Defaults to TRUE.}
   \item{line.col}{colour for the Miller regression line (if plot = TRUE).}
   \item{diag}{logical, whether or not to add the reference diagonal (if plot = TRUE). Defaults to TRUE.}
@@ -23,6 +23,8 @@ main = "Miller calibration", ...)
   \item{xlab}{label for the x axis.}
   \item{ylab}{label for the y axis.}
   \item{main}{title for the plot.}
+  \item{na.rm}{Logical value indicating whether missing values should be ignored in computations. Defaults to TRUE.}
+  \item{rm.dup}{If \code{TRUE} and if 'pred' is a SpatRaster and if there are repeated points within the same pixel, a maximum of one point per pixel is used to compute the presences. See examples in \code{\link{ptsrast2obspred}}. The default is FALSE.}
   \item{\dots}{additional arguments to pass to \code{\link{plot}}.}
 }
 \details{
@@ -63,4 +65,8 @@ MillerCalib(model = mod, main = "Model calibration line")
 # instead of a model object:
 
 MillerCalib(obs = mod$y, pred = mod$fitted.values)
+
+
+# 'obs' can also be a table of presence point coordinates
+# and 'pred' a SpatRaster of predicted values
 }

@@ -10,12 +10,12 @@ This function can optimize a model's classification threshold based on a pair of
 optiPair(model = NULL, obs = NULL, pred = NULL,
 measures = c("Sensitivity", "Specificity"), interval = 0.01, 
 plot = TRUE, plot.sum = FALSE, plot.diff = FALSE, ylim = NULL, 
-na.rm = TRUE, exclude.zeros = TRUE, ...)
+na.rm = TRUE, exclude.zeros = TRUE, rm.dup = FALSE, ...)
 }
 \arguments{
-  \item{model}{a binary-response model object of class "glm", "gam", "gbm", "randomForest" or "bart". If provided, 'obs' and 'pred' will be extracted with \code{\link{mod2obspred}}. Alternatively, you can input the 'obs' and 'pred' arguments instead of 'model'.}
-  \item{obs}{alternatively to 'model' and together with 'pred', a vector of observed presences (1) and absences (0) of a binary response variable. This argument is ignored if 'model' is provided.}
-  \item{pred}{alternatively to 'model' and together with 'obs', a vector with the corresponding predicted values of presence probability, habitat suitability, environmental favourability or alike. Must be of the same length and in the same order as 'obs'. This argument is ignored if 'model' is provided.}
+  \item{model}{a binary-response model object of class "glm", "gam", "gbm", "randomForest" or "bart". If this argument is provided, 'obs' and 'pred' will be extracted with \code{\link{mod2obspred}}. Alternatively, you can input the 'obs' and 'pred' arguments instead of 'model'.}
+  \item{obs}{alternatively to 'model' and together with 'pred', a numeric vector of observed presences (1) and absences (0) of a binary response variable. Alternatively (and if 'pred' is a 'SpatRaster'), a two-column matrix or data frame containing, respectively, the x (longitude) and y (latitude) coordinates of the presence points, in which case the 'obs' vector will be extracted with \code{\link{ptsrast2obspred}}. This argument is ignored if 'model' is provided.}
+  \item{pred}{alternatively to 'model' and together with 'obs', a vector with the corresponding predicted values of presence probability, habitat suitability, environmental favourability or alike. Must be of the same length and in the same order as 'obs'. Alternatively (and if 'obs' is a set of point coordinates), a 'SpatRaster' map of the predicted values for the entire evaluation region, in which case the 'pred' vector will be extracted with \code{\link{ptsrast2obspred}}. This argument is ignored if 'model' is provided.}
   \item{measures}{a character vector of length 2 indicating the pair of measures whose curves to plot and whose combined threshold to optimize. Available measures can be obtained with 'modEvAmethods("threshMeasures")', but note that this function expects you to use two measures that counter-balance one another, such as c("Sensitivity", "Specificity") [the default], c("Omission", "Commission"), or c("Precision", "Recall").}
   \item{interval}{the interval of thresholds at which to calculate the measures. The default is 0.01.}
   \item{plot}{logical indicating whether or not to plot the pair of measures.}
@@ -24,6 +24,7 @@ na.rm = TRUE, exclude.zeros = TRUE, ...)
   \item{ylim}{a character vector of length 2 indicating the lower and upper limits for the y axis. The default is NULL for an automatic definition of 'ylim' based on the values of the measures and their sum and/or difference if any of these are set to TRUE.}
   \item{na.rm}{logical, whether NA values should be removed from the calculation of minimum/maximum/mean values to get the optimized measures. Defaults to TRUE.}
   \item{exclude.zeros}{logical, whether non-finite and zero values should be removed from the calculation of minimum/maximum/mean values to get the optimized measures. Defaults to TRUE.}
+  \item{rm.dup}{If \code{TRUE} and if 'pred' is a SpatRaster and if there are repeated points within the same pixel, a maximum of one point per pixel is used to compute the presences. See examples in \code{\link{ptsrast2obspred}}. The default is FALSE.}
   \item{\dots}{additional arguments to be passed to the \code{\link{plot}} function.}
 }
 \value{
@@ -71,4 +72,8 @@ optiPair(model = mod, measures = c("CCR", "F1score"))
 # and predicted values, instead of a model object:
 
 optiPair(obs = mod$y, pred = mod$fitted.values)
+
+
+# 'obs' can also be a table of presence point coordinates
+# and 'pred' a SpatRaster of predicted values
 }

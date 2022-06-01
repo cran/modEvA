@@ -4,7 +4,7 @@
 Area Under the Curve
 }
 \description{
-This function calculates the Area Under the Curve of the receiver operating characteristic (ROC) plot, or alternatively the precision-recall (PR) plot, for either a model object or two matching vectors of observed binary (1 for occurrence vs. 0 for non-occurrence) and predicted (continuous, e.g. occurrence probability) values, respectively.
+This function calculates the Area Under the Curve of the receiver operating characteristic (ROC) plot, or alternatively the precision-recall (PR) plot, for either a model object or two matching vectors of observed binary (1 for occurrence vs. 0 for non-occurrence) and predicted continuous (e.g. occurrence probability) values, respectively.
 }
 \usage{
 AUC(model = NULL, obs = NULL, pred = NULL, simplif = FALSE, 
@@ -12,12 +12,13 @@ interval = 0.01, FPR.limits = c(0, 1), curve = "ROC",
 method = "rank", plot = TRUE, diag = TRUE, diag.col = "grey", 
 diag.lty = 1, curve.col = "black", curve.lty = 1, curve.lwd = 2,
 plot.values = TRUE, plot.digits = 3, plot.preds = FALSE, 
-grid = FALSE, xlab = "auto", ylab = "auto", ticks = FALSE, ...)
+grid = FALSE, xlab = "auto", ylab = "auto", ticks = FALSE,
+na.rm = TRUE, rm.dup = FALSE, ...)
 }
 \arguments{
-  \item{model}{a binary-response model object of class "glm", "gam", "gbm", "randomForest" or "bart". If provided, 'obs' and 'pred' will be extracted with \code{\link{mod2obspred}}. Alternatively, you can input the 'obs' and 'pred' arguments instead of 'model'.}
-  \item{obs}{alternatively to 'model' and together with 'pred', a vector of observed presences (1) and absences (0) of a binary response variable. This argument is ignored if 'model' is provided.}
-  \item{pred}{alternatively to 'model' and together with 'obs', a vector with the corresponding predicted values of presence probability, habitat suitability, environmental favourability or alike. Must be of the same length and in the same order as 'obs'. This argument is ignored if 'model' is provided.}
+  \item{model}{a binary-response model object of class "glm", "gam", "gbm", "randomForest" or "bart". If this argument is provided, 'obs' and 'pred' will be extracted with \code{\link{mod2obspred}}. Alternatively, you can input the 'obs' and 'pred' arguments instead of 'model'.}
+  \item{obs}{alternatively to 'model' and together with 'pred', a numeric vector of observed presences (1) and absences (0) of a binary response variable. Alternatively (and if 'pred' is a 'SpatRaster'), a two-column matrix or data frame containing, respectively, the x (longitude) and y (latitude) coordinates of the presence points, in which case the 'obs' vector will be extracted with \code{\link{ptsrast2obspred}}. This argument is ignored if 'model' is provided.}
+  \item{pred}{alternatively to 'model' and together with 'obs', a vector with the corresponding predicted values of presence probability, habitat suitability, environmental favourability or alike. Must be of the same length and in the same order as 'obs'. Alternatively (and if 'obs' is a set of point coordinates), a 'SpatRaster' map of the predicted values for the entire evaluation region, in which case the 'pred' vector will be extracted with \code{\link{ptsrast2obspred}}. This argument is ignored if 'model' is provided.}
   \item{simplif}{logical, whether to use a faster version that returns only the AUC value (and the plot if 'plot = TRUE').}
   \item{FPR.limits}{(NOT YET IMPLEMENTED) numerical vector of length 2 indicating the limits of false positive rate between which to calculate a partial AUC. The default is c(0, 1), for considering the whole AUC.}
   \item{curve}{character indicating whether to compute the "ROC" (receiver operating charateristic) or the "PR" (precision-recall) curve.}
@@ -37,6 +38,8 @@ grid = FALSE, xlab = "auto", ylab = "auto", ticks = FALSE, ...)
   \item{xlab}{label for the x axis. By default, a label is automatically generated according to the specified 'curve'.}
   \item{ylab}{label for the y axis. By default, a label is automatically generated according to the specified 'curve'.}
   \item{ticks}{logical, whether or not to add blue tick marks at the bottom of the plot to mark the thresholds at which there were values from which to to draw the curve. Defaults to FALSE.}
+  \item{na.rm}{Logical value indicating if missing values should be ignored in computations. The default is TRUE.}
+  \item{rm.dup}{If \code{TRUE} and if 'pred' is a SpatRaster and if there are repeated points within the same pixel, a maximum of one point per pixel is used to compute the presences. See examples in \code{\link{ptsrast2obspred}}. The default is FALSE.}
   \item{\dots}{further arguments to be passed to the \code{\link{plot}} function.}
 }
 \details{
@@ -78,6 +81,8 @@ data(rotif.mods)
 mod <- rotif.mods$models[[1]]
 
 
+# compute the AUC:
+
 AUC(model = mod, simplif = TRUE)
 
 AUC(model = mod, curve = "PR")
@@ -90,8 +95,9 @@ AUC(model = mod, ticks = TRUE)
 
 AUC(model = mod, plot.preds = c("curve", "bottom"))
 
-# you can also use AUC with vectors of observed and predicted values
-# instead of with a model object:
+
+# you can also use vectors of observed and predicted values
+# instead of a model object:
 
 presabs <- mod$y
 prediction <- mod$fitted.values
@@ -99,4 +105,8 @@ prediction <- mod$fitted.values
 AUC(obs = presabs, pred = prediction)
 
 AUC(obs = presabs, pred = prediction, plot.preds = TRUE)
+
+
+# 'obs' can also be a table of presence point coordinates
+# and 'pred' a SpatRaster of predicted values
 }

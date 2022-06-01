@@ -1,36 +1,19 @@
-AUC <- function(model = NULL, obs = NULL, pred = NULL, simplif = FALSE, interval = 0.01, FPR.limits = c(0, 1), curve = "ROC", method = "rank", plot = TRUE, diag = TRUE, diag.col = "grey", diag.lty = 1, curve.col = "black", curve.lty = 1, curve.lwd = 2, plot.values = TRUE, plot.digits = 3, plot.preds = FALSE, grid = FALSE, xlab = "auto", ylab = "auto", ticks = FALSE, ...) {
-  # version 2.5 (26 Nov 2021)
+AUC <- function(model = NULL, obs = NULL, pred = NULL, simplif = FALSE, interval = 0.01, FPR.limits = c(0, 1), curve = "ROC", method = "rank", plot = TRUE, diag = TRUE, diag.col = "grey", diag.lty = 1, curve.col = "black", curve.lty = 1, curve.lwd = 2, plot.values = TRUE, plot.digits = 3, plot.preds = FALSE, grid = FALSE, xlab = "auto", ylab = "auto", ticks = FALSE, na.rm = TRUE, rm.dup = FALSE, ...) {
+  # version 2.8 (6 May 2022)
   
   if (all.equal(FPR.limits, c(0, 1)) != TRUE) stop ("Sorry, 'FPR.limits' not yet implemented. Please use default values.")
   
-  if (model == NULL && length(obs) != length(pred))  stop ("'obs' and 'pred' must be of the same length (and in the same order).")
+  obspred <- inputMunch(model, obs, pred, na.rm = na.rm, rm.dup = rm.dup)
+  obs <- obspred[ , "obs"]
+  pred <- obspred[ , "pred"]
   
-  if (!is.null(model)) {
-    #if(!("glm" %in% class(model) && model$family$family == "binomial" && model$family$link == "logit")) stop ("'model' must be an object of class 'glm' with 'binomial' family and 'logit' link.")
-    if (!is.null(obs)) message("Argument 'obs' ignored in favour of 'model'.")
-    if (!is.null(pred)) message("Argument 'pred' ignored in favour of 'model'.")
-    # obs <- model$y
-    # pred <- model$fitted.values
-    obspred <- mod2obspred(model)
-    obs <- obspred[ , "obs"]
-    pred <- obspred[ , "pred"]
-  }  # end if model
-  
-  if (any(pred < 0) || any(pred > 1)) warning("Some of your predicted values are outside the [0, 1] interval within which thresholds are calculated.")
+  # if (any(pred < 0, na.rm = TRUE) || any(pred > 1, na.rm = TRUE)) warning("Some of your predicted values are outside the [0, 1] interval within which thresholds are calculated.")  # moved to after NA removal and simplif check
   
   incalculable <- FALSE
   if (all(obs == 0) || all(obs == 1)) {
     incalculable <- TRUE
     warning("AUC can't be computed if there aren't two response states (i.e. ones and zeros) to compare their predictions.")
   }
-  
-  dat <- data.frame(obs, pred)
-  n.in <- nrow(dat)
-  dat <- na.omit(dat)
-  n.out <- nrow(dat)
-  if (n.out < n.in)  warning (n.in - n.out, " observations removed due to missing data; ", n.out, " observations actually evaluated.")
-  obs <- dat$obs
-  pred <- dat$pred
   
   stopifnot(
     obs %in% c(0,1),
@@ -62,6 +45,8 @@ AUC <- function(model = NULL, obs = NULL, pred = NULL, simplif = FALSE, interval
     AUC <- ((n0 * n1) + ((n0 * (n0 + 1))/2) - sum(rnk[1 : n0])) / (n0 * n1)
     if (simplif && !plot) return(AUC)
   }
+  
+  if (any(pred < 0, na.rm = TRUE) || any(pred > 1, na.rm = TRUE) && (simplif == FALSE || plot == TRUE)) warning("Some of the 'pred' values are outside the [0, 1] interval within which thresholds are calculated and plotted.")
   
   N <- length(obs)
   preval <- suppressWarnings(prevalence(obs))
@@ -98,8 +83,8 @@ AUC <- function(model = NULL, obs = NULL, pred = NULL, simplif = FALSE, interval
   
   if (method == "trapezoid") {
     
-    if (curve == "ROC" && !incalculable) warning ("AUC value will be more accurate if method = 'rank', or if 'interval' is decreased -- see 'interval' and 'method' arguments in the function help file.")
-    else if (interval >= 0.01 && !incalculable) warning ("AUC value will be more accurate if 'interval' is decreased -- see 'interval' and 'method' arguments in the function help file.")
+    if (curve == "ROC" && !incalculable) warning ("AUC value will be more accurate if method = 'rank', or if 'interval' is decreased -- see 'interval' and 'method' arguments in ?AUC")
+    else if (interval >= 0.01 && !incalculable) warning ("AUC value will be more accurate if 'interval' is decreased -- see 'interval' and 'method' arguments in ?AUC")
     
     xy <- data.frame(xx, yy)
     #xy <- na.omit(data.frame(xx, yy))  # this caused inaccurate AUC-PR values, as per bug report by Tessa Chen
@@ -157,7 +142,7 @@ AUC <- function(model = NULL, obs = NULL, pred = NULL, simplif = FALSE, interval
     if (ticks == TRUE) axis(1, at = xx, labels = NA, tick = TRUE, tck = 0.03, col = NA, col.ticks = "blue")
     
     if (plot.values) {
-      if (curve == "ROC") text(0.5, 0.1, substitute(paste(AUC == a), list(a = round(AUC, plot.digits))))
+      if (curve == "ROC") text(0.5, 0.05, substitute(paste(AUC == a), list(a = round(AUC, plot.digits))))
       #if (curve == "PR") text(1, 1, adj = 1, substitute(paste(expression('AUC'['PR']) == a), list(a = round(AUC, plot.digits))))
       if (curve == "PR") text(0.5, 0.1, substitute(paste('AUC'['PR'] == a), list(a = round(AUC, plot.digits))))
     }  # end if plot.values

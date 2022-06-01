@@ -1,4 +1,138 @@
 ==========================================
+modEvA v3.5 (committed 2022-05-16)
+==========================================
+
+## New functions:
+
+* applyThreshold
+
+
+## Modified functions:
+
+* Boyce
+- warning emitted and points coloured red for bins with less than 30 values
+
+* standard01 (benefitting threshMeasures)
+- added is.finite(score) to avoid error when NAs produced by kappa integer overflow
+
+* getThreshold, inputMunch
+- 'obs' can be null if only 'pred' is needed
+
+* predPlot
+- added call to 'getThreshold' to include more threshold options
+- added 'cex' argument (default 0.5), plus 'interval' and 'quant' to pass to 'getThreshold'
+
+* confusionLabel
+- output is SpatRaster if input is too (as also implemented in 'applyThreshold')
+
+* optiThresh
+- fixed bug: Precision and Recall were missing from 'goodness.measures' and did not get optimals
+
+
+==========================================
+modEvA v3.4 (committed 2022-05-06)
+==========================================
+
+## Modified functions:
+
+* AUC, confusionLabel, Dsquared, getBins, HLfit, MillerCalib, optiPair, optiThresh, plotGLM, predDensity, predPlot, RsqGLM, threshMeasures
+- added arguments 'rm.dup' and 'na.rm' to pass to 'inputMunch' and cascade to 'ptsrast2obspred'
+
+* Boyce
+- renamed arguments 'rm.dupl.classes' and 'rm.dupl.points' to 'rm.dup.classes' and 'rm.dup.points', for better coherence with 'rm.dup' in other functions
+- added 'na.rm' argument
+
+
+==========================================
+modEvA v3.3 (committed 2022-05-03)
+==========================================
+
+## New functions:
+
+* inputMunch
+- converts from model or point & raster inputs to obs & pred vectors
+
+* getThreshold
+- computes threshold based on any of a range of published criteria
+
+
+## Modified functions:
+
+* prevalence
+- added 'unlist' to avoid obscure error when input is one-column tibble instead of vector
+
+* confusionLabel, Dsquared, getBins, HLfit, MillerCalib, optiPair, optiThresh, plotGLM, predDensity, predPlot, RsqGLM, threshMeasures
+- 'obs' and 'pred' can also be presence coordinates and a SpatRaster, respectively
+
+* confusionLabel, getBins
+- added 'na.rm' argument
+
+* threshMeasures 
+- 'thresh' argument now calls new 'getThreshold' function to include more options
+
+* ptsrast2obspred
+- checks for duplicates and shows message if there are (if rm.dup = FALSE)
+- 'rm.dup' now defaults to FALSE, to assume less and to match 'ecospat.boyce'
+
+* Boyce
+- 'rm.dupl.points' now defaults to FALSE, to assume less and to match 'ecospat.boyce'
+
+* modEvAmethods
+- added error message when 'fun' not correctly specified (instead of silent empty result)
+- help file now provides all available values under 'fun' argument
+
+* getModEqn
+- 'round' replaced with 'signif' to avoid small coeffs becoming zeros (bug report by Jose Carlos Guerrero)
+
+* MESS
+- added 'verbosity' argument
+
+
+==========================================
+modEvA v3.2 (committed 2022-03-13)
+==========================================
+
+## Modified functions:
+
+* AUC
+- 'obs' and 'pred' can be presence coordinates and a SpatRaster, respectively
+
+* Boyce
+- added argument '...', e.g. for plot 'main' or 'xlim'
+- argument name 'nclass' replaced with 'n.bins' to match other modEvA functions
+- argument name 'window.w' replaced with 'bin.width' to accomodate other modEvA functions
+- default 'nclass = 0' replaced with 'n.bins = NA', and all else accordingly
+- changed default 'rm.dupl.classes' to FALSE after some checks (e.g. Galpyr RF in SDMB course)
+
+* ptsrast2obspred
+- added argument 'na.rm' and set to TRUE by default
+- help file now uses 'elev' raster for more clarity
+
+
+==========================================
+modEvA v3.1 (committed 2022-02-22)
+==========================================
+
+## New functions:
+
+- Boyce
+
+- ptsrast2obspred
+
+
+## Modified functions:
+
+* AUC
+- moved 'pred' range check to after NAs are removed to avoid error
+
+* predPlot
+- on exit, restores only 'par(mar)' (the only one changed) rather than all 'par'
+
+* RsqGLM
+- added las = 2 to 'barplot'
+
+
+==========================================
 modEvA v3.0 (committed 2021-12-20) -> CRAN
 ==========================================
 

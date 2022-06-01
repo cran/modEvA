@@ -8,13 +8,13 @@ The 'optiThresh' function calculates optimal thresholds for a number of model ev
 \usage{
 optiThresh(model = NULL, obs = NULL, pred = NULL, interval = 0.01,
 measures = modEvAmethods("threshMeasures"),  
-optimize = modEvAmethods("optiThresh"), simplif = FALSE, 
-plot = TRUE, sep.plots = FALSE, xlab = "Threshold", ...)
+optimize = modEvAmethods("optiThresh"), simplif = FALSE, plot = TRUE, 
+sep.plots = FALSE, xlab = "Threshold", na.rm = TRUE, rm.dup = FALSE, ...)
 }
 \arguments{
-  \item{model}{a binary-response model object of class "glm", "gam", "gbm", "randomForest" or "bart". If provided, 'obs' and 'pred' will be extracted with \code{\link{mod2obspred}}. Alternatively, you can input the 'obs' and 'pred' arguments instead of 'model'.}
-  \item{obs}{alternatively to 'model' and together with 'pred', a vector of observed presences (1) and absences (0) of a binary response variable. This argument is ignored if 'model' is provided.}
-  \item{pred}{alternatively to 'model' and together with 'obs', a vector with the corresponding predicted values of presence probability, habitat suitability, environmental favourability or alike. Must be of the same length and in the same order as 'obs'. This argument is ignored if 'model' is provided.}
+  \item{model}{a binary-response model object of class "glm", "gam", "gbm", "randomForest" or "bart". If this argument is provided, 'obs' and 'pred' will be extracted with \code{\link{mod2obspred}}. Alternatively, you can input the 'obs' and 'pred' arguments instead of 'model'.}
+  \item{obs}{alternatively to 'model' and together with 'pred', a numeric vector of observed presences (1) and absences (0) of a binary response variable. Alternatively (and if 'pred' is a 'SpatRaster'), a two-column matrix or data frame containing, respectively, the x (longitude) and y (latitude) coordinates of the presence points, in which case the 'obs' vector will be extracted with \code{\link{ptsrast2obspred}}. This argument is ignored if 'model' is provided.}
+  \item{pred}{alternatively to 'model' and together with 'obs', a vector with the corresponding predicted values of presence probability, habitat suitability, environmental favourability or alike. Must be of the same length and in the same order as 'obs'. Alternatively (and if 'obs' is a set of point coordinates), a 'SpatRaster' map of the predicted values for the entire evaluation region, in which case the 'pred' vector will be extracted with \code{\link{ptsrast2obspred}}. This argument is ignored if 'model' is provided.}
   \item{interval}{numeric value between 0 and 1 indicating the interval between the thresholds at which to calculate the evaluation measures. Defaults to 0.01.}
   \item{measures}{character vector indicating the names of the model evaluation measures for which to calculate optimal thresholds. The default is using all measures available in 'modEvAmethods("threshMeasures")'.}
   \item{optimize}{character vector indicating the threshold optimization criteria to use; "each" calculates the optimal threshold for each model evaluation measure, while the remaining options optimize all measures according to the specified criterion. The default is using all criteria available in 'modEvAmethods("optiThresh")'.}
@@ -22,6 +22,8 @@ plot = TRUE, sep.plots = FALSE, xlab = "Threshold", ...)
   \item{plot}{logical, whether to plot the values of each evaluation measure at all thresholds.}
   \item{sep.plots}{logical. If TRUE, each plot is presented separately (you need to be recording R plot history to be able to browse through them all); if FALSE(the default), all plots are presented together in the same plotting window.}
   \item{xlab}{character vector indicating the label of the x axis.}
+  \item{na.rm}{Logical value indicating whether missing values should be ignored in computations. Defaults to TRUE.}
+  \item{rm.dup}{If \code{TRUE} and if 'pred' is a SpatRaster and if there are repeated points within the same pixel, a maximum of one point per pixel is used to compute the presences. See examples in \code{\link{ptsrast2obspred}}. The default is FALSE.}
   \item{\dots}{additional arguments to pass to \code{\link{plot}}.}
 }
 \value{
@@ -71,6 +73,10 @@ measures = c("CCR", "Sensitivity", "kappa", "TSS"), ylim = c(0, 1))
 # values instead of with a model object:
 
 \dontrun{
-optiThresh(obs = mod$y, pred = mod$fitted.values, pch = ".")
+optiThresh(obs = mod$y, pred = mod$fitted.values, pch = 20)
 }
+
+
+# 'obs' can also be a table of presence point coordinates
+# and 'pred' a SpatRaster of predicted values
 }

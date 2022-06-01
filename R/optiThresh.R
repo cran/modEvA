@@ -2,8 +2,9 @@ optiThresh <-
   function(model = NULL, obs = NULL, pred = NULL, interval = 0.01,
            measures = modEvAmethods("threshMeasures"),
            optimize = modEvAmethods("optiThresh"), simplif = FALSE,
-           plot = TRUE, sep.plots = FALSE, xlab = "Threshold", ...) {
-    # version 2.8 (26 Nov 2021)
+           plot = TRUE, sep.plots = FALSE, xlab = "Threshold",
+           na.rm = TRUE, rm.dup = FALSE, ...) {
+    # version 3.0 (6 May 2022)
     
     wrong.measures <- measures[which(!(measures %in% modEvAmethods("threshMeasures")))]
     wrong.optimizers <- optimize[which(!(optimize %in% modEvAmethods("optiThresh")))]
@@ -16,18 +17,13 @@ optiThresh <-
       optimize <- optimize[!(optimize %in% wrong.optimizers)]
     }
     
-    if (!is.null(model)) {
-      #if(!("glm" %in% class(model) && model$family$family == "binomial" && model$family$link == "logit")) stop ("'model' must be an object of class 'glm' with 'binomial' family and 'logit' link.")
-      if (!is.null(obs)) message("Argument 'obs' ignored in favour of 'model'.")
-      if (!is.null(pred)) message("Argument 'pred' ignored in favour of 'model'.")
-      # obs <- model$y
-      # pred <- model$fitted.values
-      obspred <- mod2obspred(model)
-      obs <- obspred[ , "obs"]
-      pred <- obspred[ , "pred"]
-      
-      model <- NULL  # so the message is not repeated for each threshold
-    }  # end if model
+    obspred <- inputMunch(model, obs, pred, na.rm = na.rm, rm.dup = rm.dup)
+    obs <- obspred[ , "obs"]
+    pred <- obspred[ , "pred"]
+    
+    # if (!is.null(model)) {
+    #   model <- NULL  # so the message is not repeated for each threshold
+    # }  # end if model
     
     input.measures <- measures
     
@@ -51,8 +47,10 @@ optiThresh <-
     thresholds <- seq(from = 0, to = 1, by = interval)
     Nthresholds <- length(thresholds)
     Nmeasures <- length(measures)
-    all.thresholds <- data.frame(matrix(data = NA, nrow = Nthresholds,
-                                        ncol = Nmeasures), row.names = thresholds)
+    all.thresholds <- data.frame(matrix(data = NA, 
+                                        nrow = Nthresholds,
+                                        ncol = Nmeasures), 
+                                 row.names = thresholds)
     colnames(all.thresholds) = measures
     
     for (t in 1 : Nthresholds) for (m in 1 : Nmeasures) {
@@ -76,7 +74,7 @@ optiThresh <-
         optimals.each <- data.frame(matrix(data = NA, nrow = Nmeasures, ncol = 4))
         colnames(optimals.each) <- c("measure", "threshold", "value", "type")
         optimals.each[1] <- measures
-        goodness.measures <- c("CCR", "Sensitivity", "Specificity", "PPP", "NPP", "kappa", "TSS", "NMI", "OddsRatio", "F1score")
+        goodness.measures <- c("CCR", "Sensitivity", "Specificity", "PPP", "NPP", "kappa", "TSS", "NMI", "OddsRatio", "F1score", "Precision", "Recall")
         badness.measures <- c("Omission", "Commission", "Misclass", "UPR", "OPR")
         change.measures <- c("PPI", "PAI")
         
@@ -90,7 +88,7 @@ optiThresh <-
           else {
             if (measures[m] %in% (badness.measures)) {  # optimal is minimum
               optimals.each[m, "threshold"] <- as.numeric(rownames(all.thresholds)[which.min(all.thresholds[, m])])
-              optimals.each[m, "value"] <- min(all.thresholds[ ,m], na.rm = TRUE)
+              optimals.each[m, "value"] <- min(all.thresholds[ , m], na.rm = TRUE)
               optimals.each[m, "type"] <- "minimum"
             }  # end if measure in badness
             else {

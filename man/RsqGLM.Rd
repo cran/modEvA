@@ -54,6 +54,8 @@ RsqGLM(obs = mod$y, pred = mod$fitted.values)
 
 # plotting arguments can be modified:
 
+par(mar = c(6, 3, 2, 1))
+
 RsqGLM(obs = mod$y, pred = mod$fitted.values, col = "seagreen", border = NA, 
 ylim = c(0, 1), las = 2, main = "Pseudo-R-squared values")
 

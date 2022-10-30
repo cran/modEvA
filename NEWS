@@ -1,5 +1,104 @@
 ==========================================
-modEvA v3.5 (committed 2022-05-16)
+modEvA v3.8.4 (committed 2022-10-28)
+==========================================
+
+## Modified functions:
+
+* applyThreshold
+- added "as.numeric" to 'sort(tresh)', otherwise it was character if one of the input 'thresh' criteria was character, which generated errors downstream
+
+
+==========================================
+modEvA v3.8.3 (committed 2022-10-27)
+==========================================
+
+## Modified functions:
+
+* predPlot
+- 'thresh' can now be set to NA or NULL
+- legend is also changed accordingly
+
+* optiThresh
+- warning emitted if obs are all 0 or all 1 (which may originate errorr) - propagates to optiPair
+
+
+## Other modified files:
+
+* MillerCalib.Rd
+- added explanations and examples on applicability to non-logit link models and non-probability predictions
+
+
+==========================================
+modEvA v3.82 (committed 2022-07-21)
+==========================================
+
+## Modified functions:
+
+* varPart
+- added argument 'cor.method'
+- changed previous argument name 'method' to 'pred.type', to avoid confusion with the above
+
+
+==========================================
+modEvA v3.81 (committed 2022-07-20)
+==========================================
+
+## Modified functions:
+
+* varPart
+- argument 'model' now accepts glms of any family (but properly tested only for binomial!)
+
+
+==========================================
+modEvA v3.8 (committed 2022-07-20)
+==========================================
+
+## Modified functions:
+
+* varPart
+- new arguments 'model', 'groups', 'method', 'return.models'
+- output table now doesn't say "pure" or "overlap", just the factor names separated by "_"
+- argument 'coloured' changed to 'colr' to avoid English/American spelling issues
+
+
+==========================================
+modEvA v3.7 (committed 2022-07-10)
+==========================================
+
+## Modified functions:
+
+* applyThreshold
+- 'thresh' can now be of length 2, for high, intermediate and low predictions
+
+
+## Other modified files:
+
+* DESCRIPTION
+- added reference about the method, as suggested by Uwe Ligges after previous CRAN submission
+
+
+==========================================
+modEvA v3.6 (committed 2022-06-14)
+==========================================
+
+## New functions:
+
+* confusionMatrix
+
+
+## Modified functions:
+
+* confusionLabel
+- added 'getThreshold' to include all 'thresh' options
+- added 'interval' and 'quant' arguments for the above
+- 'rm.dup' now defaults to FALSE to assume less
+
+* threshMeasures
+- moved part of the code to new 'confusionMatrix' function, which is now called from here
+
+
+==========================================
+modEvA v3.5 (committed 2022-05-16) -> CRAN
 ==========================================
 
 ## New functions:
@@ -26,7 +125,7 @@ modEvA v3.5 (committed 2022-05-16)
 - output is SpatRaster if input is too (as also implemented in 'applyThreshold')
 
 * optiThresh
-- fixed bug: Precision and Recall were missing from 'goodness.measures' and did not get optimals
+- fixed bug: Precision and Recall were missing from 'goodness.measures' and didn't get optimals
 
 
 ==========================================

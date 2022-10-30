@@ -1,15 +1,14 @@
-\name{confusionLabel}
-\alias{confusionLabel}
+\name{confusionMatrix}
+\alias{confusionMatrix}
 \title{
-Label predictions according to their confusion matrix category
+Confusion matrix
 }
 \description{
-This function labels the predictions of a binary-response model according to their confusion matrix categories, i.e., it classifies each prediction into a false positive, false negative, true positive or true negative, given a user-defined threshold value.
+This function computes the confusion (or contingency) matrix for a binary-response model, containing the numbers of false positives, false negatives, true positives and true negatives, given a user-defined threshold value.
 }
 \usage{
-confusionLabel(model = NULL, obs = NULL, pred = NULL, thresh, 
-interval = interval, quant = quant, verbosity = 2, na.rm = FALSE, 
-rm.dup = FALSE)
+confusionMatrix(model = NULL, obs = NULL, pred = NULL, thresh, 
+interval = interval, quant = quant, verbosity = 2, na.rm = TRUE, rm.dup = FALSE)
 }
 \arguments{
   \item{model}{a binary-response model object of class "glm", "gam", "gbm", "randomForest" or "bart". If this argument is provided, 'obs' and 'pred' will be extracted with \code{\link{mod2obspred}}. Alternatively, you can input the 'obs' and 'pred' arguments (e.g. for external test data) instead of 'model'.}
@@ -23,13 +22,13 @@ rm.dup = FALSE)
   \item{rm.dup}{If \code{TRUE} and if 'pred' is a SpatRaster and if there are repeated points within the same pixel, a maximum of one point per pixel is used to compute the presences. See examples in \code{\link{ptsrast2obspred}}. The default is FALSE.}
 }
 \value{
-This function returns a character vector of the same length as 'obs' and 'pred', or of the same number of rows as the data in 'model', containing the confusion matrix label for each value.
+This function returns a data frame containing the four values of the confusion matrix.
 }
 \author{
 A. Marcia Barbosa
 }
 \seealso{
-\code{\link{threshMeasures}}, \code{\link{confusionMatrix}}
+\code{\link{threshMeasures}}, \code{\link{confusionLabel}}
 }
 \examples{
 # load sample models:
@@ -38,7 +37,7 @@ data(rotif.mods)
 # choose a particular model to play with:
 mod <- rotif.mods$models[[1]]
 
-confusionLabel(model = mod, thresh = 0.5)
+confusionMatrix(model = mod, thresh = 0.5)
 
 
 # you can instead use vectors of observed and predicted values:
@@ -46,7 +45,7 @@ confusionLabel(model = mod, thresh = 0.5)
 presabs <- mod$y
 prediction <- mod$fitted.values
 
-confusionLabel(obs = presabs, pred = prediction, thresh = 0.5)
+confusionMatrix(obs = presabs, pred = prediction, thresh = 0.5)
 
 
 # 'obs' can also be a table of presence point coordinates

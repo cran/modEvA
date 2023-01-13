@@ -1,6 +1,111 @@
-==========================================
-modEvA v3.8.4 (committed 2022-10-28)
-==========================================
+============================================
+modEvA v3.9 (committed 2023-01-12)
+============================================
+
+## Modified functions:
+
+* varImp
+- corrected point locations (accounting for space between bars) for barplot
+- error.bars in lollipop chart re-plotted on top to improve visibility
+- help file cites Weissgerber et al.
+
+* predDensity
+- 'ci' now plotted as semi-transparent rectangle (rather than just vertical ablines)
+- added 'ci' example to help file
+
+
+============================================
+modEvA v3.8.9 (committed 2023-01-11)
+============================================
+
+## Modified functions:
+
+* varImp
+- implemented plot.points argument
+- arguments 'ci' and 'ci.type' replaced by argument 'error.bars'
+- 'error.bars' can also be a numeric for a x% confidence interval
+- added 'grid' argument
+- added "imp.type" argument (placeholder, so far only option "each")
+- set 'border' to NA in legend and barplot
+- fixed legend colour bug
+- added check for loaded 'gbm' when needed
+
+* predDensity
+- added 'ci' argument
+- added '...' for arguments to pass to 'hist'
+
+
+============================================
+modEvA v3.8.8 (committed 2023-01-05)
+============================================
+
+## New functions:
+
+* RMSE
+
+* lollipop
+
+
+## Modified functions:
+
+* varImp
+- added "ylim" argument (default "auto"), and xpd=FALSE to 'barplot' call
+- changed default positive colour for better contrast with CI lines in barplot
+- new default plot.type = "lollipop"
+
+* threshMeasures
+- "OddsRatio" removed from default 'measures'
+- 'ylim' argument removed (default 0,1 not needed after OddsRation removal; 'ylim' can still be used under '...')
+- new argument 'plot.type'
+- new default plot.type = "lollipop"
+
+* RsqGLM
+- new argument 'plot.type'
+- new default plot.type = "lollipop"
+
+
+============================================
+modEvA v3.8.7 (committed 2022-12-22)
+============================================
+
+## New functions:
+
+* varImp
+
+
+## Modified functions:
+
+* mod2obspred
+- added supressMessages() when predicting with GBM
+
+
+============================================
+modEvA v3.8.6 (committed 2022-12-20)
+============================================
+
+## Modified functions:
+
+* Dsquared
+- 'family' is now guessed from data (with message) if null
+- extended to models other than GLM
+
+
+============================================
+modEvA v3.8.5 (committed 2022-11-06)
+============================================
+
+## Modified functions:
+
+* ptsrast2obspred
+- added (or 'rm.dup.points=TRUE' for 'Boyce' function) to warning, otherwise Boyce would say "argument X matches multiple formal arguments"
+
+* MilerCalib
+- added final empty line
+
+
+============================================
+modEvA v3.8.4 (committed 2022-10-28) -> CRAN
+============================================
 
 ## Modified functions:
 

@@ -1,5 +1,59 @@
+
 ============================================
-modEvA v3.9 (committed 2023-01-12)
+modEvA v3.9.3 (committed 2023-04-14) -> CRAN
+============================================
+
+## Modified functions:
+
+* AUC
+- 'method' default now NULL, to avoid unsolicited warning when curve="PR" because default method was "rank"
+
+
+## Other modified files:
+
+* varImp.Rd
+- improved info on parameters for different plot types (e.g. cex.axis for lollipop, cex.names for barplot)
+
+
+============================================
+modEvA v3.9.2 (committed 2023-03-19)
+============================================
+
+## Modified functions:
+
+* Boyce
+- explicit warning instead of obscure error if 'obs' has no presences
+- warning also when 'obs' has only presences (Boyce = NA)
+
+* optiThresh
+- explicit warning (and results NA) instead of obscure error if 'obs' has either no presences or no absences
+- empty plot instead of error for incalculable metrics
+
+* threshMeasures
+- explicit warning instead of obscure error if 'obs' has either no presences or no absences
+
+
+============================================
+modEvA v3.9.1 (committed 2023-02-26)
+============================================
+
+## Modified functions:
+
+* varImp
+- error if family is not 'binomial', to avoid obscure error otherwise because no 'z-value' column in summary
+
+* confusionMatrix, confusionLabel
+- changed defaults 'interval = interval, quant = quant' to 'interval = 0.01, quant = 0'
+
+
+## Other modified files:
+
+* CITATION
+- replaced old-style personList() with c(), and citEntry() with bibentry(), as per new CRAN requirements
+
+
+============================================
+modEvA v3.9 (committed 2023-01-12)  ->  CRAN
 ============================================
 
 ## Modified functions:

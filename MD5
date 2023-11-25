@@ -1,9 +1,9 @@
-d74fc4fc3941708b40ab2d4c48803fe6 *DESCRIPTION
+45b52b050c2b8ff051ed85437f5c5dda *DESCRIPTION
 c6e95818a6394bef26a9579d67668d84 *NAMESPACE
-aaf5396ea2605437b2f0a96ae4808d0e *NEWS
+1166dffd0ef7cb6fd76fd213c560ce3a *NEWS
 96550e683f8c3db0f8f907a4f159dd03 *R/AUC.R
 0e4e6a4b9dbe398e7a2c2b0f96539f16 *R/Boyce.R
-1623cc7c1131a84f47e37fdb221ab9ce *R/Dsquared.R
+bd705b6a444815b88568cadd4c7b1fa0 *R/Dsquared.R
 180a3ce51ed45af7aa4e03c4ca013f01 *R/HLfit.R
 ea92435a4c6fc0acc1161e0f71ec7636 *R/MESS.R
 62f4a3c3501894a5d35191eed4e6a079 *R/MillerCalib.R
@@ -43,7 +43,7 @@ d7827963acd54c218875bbec3365e1fb *data/rotif.mods.rda
 4ed690971cc4bf3ea7a4b3b1e685c6c5 *inst/CITATION
 ab0c44a8ccf51e487ddc1a099ac6af95 *man/AUC.Rd
 d20da6ee10c55fde892abc1ccf936d61 *man/Boyce.Rd
-fb305278ddba9d1f0cbcbbef3577c9f4 *man/Dsquared.Rd
+11b9aa559725a54ee1c50dc4180ecb32 *man/Dsquared.Rd
 331b2846e70b6fe58b9b147beed21620 *man/HLfit.Rd
 b385f84d62e19f973110b2341c1dcfff *man/MESS.Rd
 c59ed5d2ddb577cc0098d150ddc69274 *man/MillerCalib.Rd
@@ -58,11 +58,11 @@ c8fc43b15f0298488452db63bef94c14 *man/evaluate.Rd
 ff673585f34b3c7c5a35738d4d7a89ee *man/evenness.Rd
 0afe0c3b471ff3e5d3ed9385b0996e84 *man/getBins.Rd
 3bd2a7f6a183af6bfcae972902d8c44a *man/getModEqn.Rd
-ad2b58f5a8d0ee21899e49fc663a9067 *man/getThreshold.Rd
+710e0bb44ea8d8fd8b0e439adbae8d2c *man/getThreshold.Rd
 7f2caab9c0989496d8e9649b2bdc5738 *man/inputMunch.Rd
 b6c3efb2a887e8993436c030e0e134da *man/lollipop.Rd
 ae8cf988c70eebf79f2aab1abd5c4051 *man/mod2obspred.Rd
-26dddedbf9b2ff60eaef339840f5a689 *man/modEvA-package.Rd
+c2dd255b0ce61b6eb559d96796c5e345 *man/modEvA-package.Rd
 0d5d1c8d6d524721f35322e6375a3f8f *man/modEvAmethods.Rd
 14c11de8c96a02f1f4c6db6a8b2fdb47 *man/multModEv.Rd
 a32787dca929640e0da15c77baee04f6 *man/optiPair.Rd
@@ -75,7 +75,7 @@ e0ae6353d989ecc6a05b549a8957c869 *man/plotGLM.Rd
 5f6528314ee7d69c9c3c5dd31ec876c7 *man/quantReclass.Rd
 c51c8d9968e4e9be4e9ec48d94614ddf *man/range01.Rd
 5a0bd4b5241f7c81bd315d0ad70b073b *man/rotif.mods.Rd
-1248d13ef7078e92fdb9bda81720f02d *man/similarity.Rd
+c27e8eaef86772666642ffc92810a8f8 *man/similarity.Rd
 740bf479d111eb37e0a4294b021a9ddb *man/standard01.Rd
 6c36c54e05ef896f2697b89ab751ee5e *man/threshMeasures.Rd
 c6b0e1a65a827fe20a2cf3de83144fe0 *man/varImp.Rd

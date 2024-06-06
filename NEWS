@@ -1,4 +1,59 @@
 ==============================================
+modEvA v3.17 (committed 2024-06-06)
+==============================================
+
+## Modified functions:
+
+* varImp
+- 'relative' argument now applies also to BART and flexBART models
+- adapted to latest version of flexBART, which does carry variable names
+- informative error messages when model is BART and doesn't have the required info
+- added 'verbosity' argument
+
+
+==============================================
+modEvA v3.16 (committed 2024-06-05)
+==============================================
+
+## Modified functions:
+
+* optiThresh
+- added 'verbosity' argument to pass to inputMunch()
+- abline() now plotted also if 'optimize' is a specific measure name, not necessarily "each"
+
+* AUC
+- added 'verbosity' argument to pass to inputMunch()
+
+* varImp
+- added 'relative' argument for z value (suggested by Alba Estrada)
+
+
+==============================================
+modEvA v3.15 (committed 2024-03-25)
+==============================================
+
+## Modified functions:
+
+* threshMeasures, evaluate, modEvAmethods
+- added 'ORSS' and 'SEDI' metrics (Wunderlich et al. 2019) (suggested by Jose Carlos Guerrero)
+
+
+==============================================
+modEvA v3.14 (committed 2024-02-01)
+==============================================
+
+## New functions:
+
+* logLike
+
+
+## Modified functions:
+
+* predDensity
+- added 'xlim' argument
+
+
+==============================================
 modEvA v3.13.3 (committed 2024-01-19) -> CRAN
 ==============================================
 

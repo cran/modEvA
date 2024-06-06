@@ -1,6 +1,6 @@
-varImp <- function(model, imp.type = "each", reorder = TRUE, group.cats = FALSE, plot = TRUE, plot.type = "lollipop", error.bars = "sd", ylim = "auto", col = c("#4477aa", "#ee6677"), plot.points = TRUE, legend = TRUE, grid = TRUE, ...) {
+varImp <- function(model, imp.type = "each", relative = TRUE, reorder = TRUE, group.cats = FALSE, plot = TRUE, plot.type = "lollipop", error.bars = "sd", ylim = "auto", col = c("#4477aa", "#ee6677"), plot.points = TRUE, legend = TRUE, grid = TRUE, verbosity = 2, ...) {
 
-  # version 2.0 (27 Sep 2023)
+  # version 2.2 (6 Jun 2024)
 
   # if 'col' has length 2 and varImp has negative values (e.g. for z-value), those will get the second colour
 
@@ -20,21 +20,22 @@ varImp <- function(model, imp.type = "each", reorder = TRUE, group.cats = FALSE,
 
   if (!is_bart && !is_flexbart)  error.bars <- NA
 
-  if (reorder && is_flexbart) {
+  if (reorder && is_flexbart && is.null(colnames(model[["varcounts"]]))) {
     reorder <- FALSE
-    message ("'reorder' set to FALSE, as 'flexBART' does not currently carry variable names, which would make it impossible to match variables with importance values. Variables are in the order in which they were provided to the 'flexBART' model, with the continuous preceding the categorical ones.")
+    if (verbosity > 0) message ("'reorder' set to FALSE, as this version of 'flexBART' does not carry variable names, which would make it impossible to match variables with importance values. Variables are in the order in which they were provided to the 'flexBART' model, with the continuous preceding the categorical ones. Update 'flexBART' if you want the variables named and reordered.")
   }
 
   if (is(model, "glm")) {  #  && !is(model, "Gam")
 
     if (family(model)$family != "binomial")  stop ("This function is currently only implemented for binary-response models of family 'binomial'.")
 
-    #  if (measure == "z") {
-    metric <- "Absolute z value"
-    cat("\nMetric:", metric, "\n\n")
+    # if (measure == "z") {
+    metric <- ifelse(isTRUE(relative), "Relative z value", "Absolute z value")
+    if (verbosity > 1) cat("\nMetric:", metric, "\n\n")
     varimp <- summary(model)$coefficients[-1, "z value"]
+    if (isTRUE(relative)) varimp <- varimp / sum(abs(varimp))
     ylab <- metric
-    #  }
+    # }
 
     # if (measure == "Wald") {  # requires 'fuzzySim' and 'aod'
     #   ylab <- "Wald"
@@ -50,7 +51,7 @@ varImp <- function(model, imp.type = "each", reorder = TRUE, group.cats = FALSE,
     # requireNamespace("gbm")  # would require a suggest/depend
     if ("gbm" %in% .packages()) {
       metric <- "Relative influence"
-      cat("\nMetric:", metric, "\n\n")
+      if (verbosity > 1) cat("\nMetric:", metric, "\n\n")
       ylab <- metric
       smry <- summary(model, plotit = FALSE)
       varimp <- smry[ , "rel.inf"] / 100
@@ -62,7 +63,7 @@ varImp <- function(model, imp.type = "each", reorder = TRUE, group.cats = FALSE,
 
   else if (is(model, "randomForest")) {
     metric <- colnames(model$importance)
-    cat("\nMetric:", metric, "\n\n")
+    if (verbosity > 1) cat("\nMetric:", metric, "\n\n")
     varimp <- model$importance  # / nrow(model$importance) / 100  # doesn't work well for mean accuracy decrease
     names(varimp) <- rownames(model$importance)
     ylab <- metric
@@ -71,15 +72,18 @@ varImp <- function(model, imp.type = "each", reorder = TRUE, group.cats = FALSE,
 
   else if (is_bart || is_flexbart) {
 
-    metric <- "Proportion of splits used"
-    cat("\nMetric:", metric, "\n\n")
+    # metric <- "Proportion of splits used"
+    metric <- ifelse(isTRUE(relative), "Proportion of splits used", "Number of splits used")
+    if (verbosity > 1) cat("\nMetric:", metric, "\n\n")
     ylab <- metric
 
-    if ("varcounts" %in% names(model))  # in flexBART models
+    if ("varcounts" %in% names(model)) { # in flexBART models
       names(model)[grep("varcounts", names(model))] <- "varcount"  # to homogenize
+    }
 
-    varimps <- model[["varcount"]] / rowSums(model[["varcount"]])
-
+    # varimps <- model[["varcount"]] / rowSums(model[["varcount"]])
+    varimps <- model[["varcount"]]
+    if (isTRUE(relative)) varimps <- varimps / rowSums(model[["varcount"]])
     varimp <- colMeans(varimps)
 
     if (group.cats) {
@@ -92,9 +96,9 @@ varImp <- function(model, imp.type = "each", reorder = TRUE, group.cats = FALSE,
         }
       }
 
-       else if (is(model, "pbart") || is(model, "lbart")) {
-         names.nosuffix <- gsub("[0-9]+$", "", colnames(model$varcount))
-       }  # but WATCH OUT: other variables with numeric suffix (e.g. "o2" and "o3") will be grouped too! also cat vars with same name but different numeric suffix, e.g. "var" and "var2"
+      else if (is(model, "pbart") || is(model, "lbart")) {
+        names.nosuffix <- gsub("[0-9]+$", "", colnames(model$varcount))
+      }  # but WATCH OUT: other variables with numeric suffix (e.g. "o2" and "o3") will be grouped too! also cat vars with same name but different numeric suffix, e.g. "var" and "var2"
 
       if (!is_flexbart) {
 
@@ -112,14 +116,22 @@ varImp <- function(model, imp.type = "each", reorder = TRUE, group.cats = FALSE,
     }  # end if group.cats
 
     if (is(model, "bart")) {  #  || is(model, "pbart") || is(model, "lbart")
+      if (is.null(model$fit)) {
+        stop("'model' does not contain the required info; please compute it with keeptrees=TRUE")
+      }
 
-      # if (is(model, "bart")
-          dropped.vars <- names(which(unlist(attr(model$fit$data@x, "drop")) == 1))
-          # else dropped.vars <- colnames(model$varcount)[model$rm.const]  # no, because these names already have the cat vars divided and renamed according to their factor levels, so the 'rm.const' indices do not correctly match the original var names
+      if (is.null(colnames(model$fit$data@x))) {
+        # colnames(model$fit$data@x) <- paste0("X", 1:ncol(model$fit$data@x))  # didn't work, pbb because other attributes were missing
+        stop("'model' does not have predictor attributes; please compute it with column names in the predictor variables")
+      }
+
+      # if (is(model, "bart"))
+      dropped.vars <- names(which(unlist(attr(model$fit$data@x, "drop")) == 1))
+      # else dropped.vars <- colnames(model$varcount)[model$rm.const]  # no, because these names already have the cat vars divided and renamed according to their factor levels, so the 'rm.const' indices do not correctly match the original var names
 
       n.dropped <- length(dropped.vars)
       if (n.dropped > 0) {
-        message("The following variables had been automatically dropped by the model (e.g. for having no variability):  ", paste(dropped.vars, collapse = ", "))
+        if (verbosity > 0) message("The following variables had been automatically dropped by the model (e.g. for having no variability):  ", paste(dropped.vars, collapse = ", "))
         dropped.varimp <- rep(0, n.dropped)
         names(dropped.varimp) <- dropped.vars
         varimp <- c(varimp, dropped.varimp)

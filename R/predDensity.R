@@ -1,12 +1,12 @@
-predDensity <- function(model = NULL, obs = NULL, pred = NULL, separate = TRUE, type = "both", ci = NA, legend.pos = "topright", main = "Density of predicted values", na.rm = TRUE, rm.dup = FALSE, xlim = NULL, ...) {
+predDensity <- function(model = NULL, obs = NULL, pred = NULL, separate = TRUE, type = "both", ci = NA, legend.pos = "topright", main = "Density of pred values", na.rm = TRUE, rm.dup = FALSE, xlim = NULL, ...) {
   # version 1.7 (2 Fev 2024)
 
   stopifnot(is.null(xlim) || (is.numeric(xlim) && is.finite(xlim) && length(xlim) == 2))
 
   if (!is.na(ci)) {
     # if (separate) {
-      # message("Because 'ci' is not NULL, 'separate' was changed to FALSE.")
-      separate <- FALSE
+    # message("Because 'ci' is not NULL, 'separate' was changed to FALSE.")
+    separate <- FALSE
     # }
     if (!is.numeric(ci) || length(ci) != 1 || ci < 0 || ci > 1) stop("'ci' must be either NULL or a numeric value between 0 and 1.")  # new
   }
@@ -58,7 +58,7 @@ predDensity <- function(model = NULL, obs = NULL, pred = NULL, separate = TRUE, 
       rslt[["density_obs1"]] <- dens1
       rslt[["density_obs0"]] <- dens0
     }
-    plot(x = xrange, y = yrange, xlab = "Predicted value", ylab = "Density", type = "n", main = main)
+    plot(x = xrange, y = yrange, xlab = "Pred value", ylab = "Density", type = "n", main = main)
   }
 
   if (type %in% c("histogram", "both")) {  # "histogram" %in% type
@@ -66,29 +66,31 @@ predDensity <- function(model = NULL, obs = NULL, pred = NULL, separate = TRUE, 
     hist0 <- hist(pred0, plot = FALSE, ...)
     hist1 <- hist(pred1, plot = FALSE, ...)
     if (type == "histogram") {  # !("density" %in% type)
+      xrange <- range(pred, na.rm = TRUE)
+      if (all(range(pred, na.rm = TRUE) %in% 0:1)) xrange <- c(0, 1)
       yrange <- range(hist0$density, hist1$density, finite = TRUE)
-      plot(x = c(0, 1), y = yrange, type = "n", xlab = "Predicted value", ylab = "Density", main = main)
+      plot(x = xrange, y = yrange, type = "n", xlab = "Pred value", ylab = "Density", main = main)
     }
     if (!separate) {
-      histogram <- hist(c(pred0, pred1), freq = FALSE, col = "grey40", add = TRUE, ...)
+      histogram <- hist(c(pred0, pred1), freq = FALSE, col = "darkblue", add = TRUE, ...)
       rslt[["histogram"]] <- histogram
-      } else {
-      hist(pred1, freq = FALSE, col = "grey40", add = TRUE, ...)
-      hist(pred0, freq = FALSE, col = "darkgrey", density = 40, angle = 45, add = TRUE, ...)
+    } else {
+      hist(pred1, freq = FALSE, col = "darkblue", add = TRUE, ...)
+      hist(pred0, freq = FALSE, col = "paleturquoise", density = 40, angle = 45, add = TRUE, ...)
       rslt[["histogram_obs1"]] <- hist1
       rslt[["histogram_obs0"]] <- hist0
-      if (legend.pos != "n" && type == "histogram") legend(legend.pos, legend = c("absences", "presences"), fill = c("darkgrey", "grey40"), border = NA, density = c(40, NA), bty = "n")
+      if (legend.pos != "n" && type == "histogram") legend(legend.pos, legend = c("absence", "presence"), fill = c("paleturquoise", "darkblue"), border = c("paleturquoise", "black"), density = c(40, NA), text.col = "plum4", bty = "n")
     }
   }
 
   if (type %in% c("density", "both")) {  # "density" %in% type
     if (!separate) {
-      lines(dens, col = "grey10", lwd = 2)
+      lines(dens, col = "navyblue", lwd = 2)
     } else {
-      lines(dens1, col = "grey10", lwd = 2)
-      lines(dens0, col = "darkgrey", lty = 5, lwd = 2)
-      if (!is.na(legend.pos) && legend.pos != "n" && type == "density") legend(legend.pos, legend = c("absences", "presences"), col = c("darkgrey", "grey10"), lty = c(5, 1), bty = "n")
-      if (!is.na(legend.pos) && legend.pos != "n" && type == "both") legend(legend.pos, legend = c("absences", "presences"), fill = c("darkgrey", "grey40"), border = NA, lty = c(5, 1), col = c("darkgrey", "grey20"), density = c(40, NA), bty = "n")
+      lines(dens1, col = "navyblue", lwd = 2)
+      lines(dens0, col = "darkturquoise", lty = 5, lwd = 2)
+      if (!is.na(legend.pos) && legend.pos != "n" && type == "density") legend(legend.pos, legend = c("absence", "presence"), col = c("darkturquoise", "navyblue"), lty = c(5, 1), text.col = "plum4", bty = "n")
+      if (!is.na(legend.pos) && legend.pos != "n" && type == "both") legend(legend.pos, legend = c("absence", "presence"), fill = c("paleturquoise", "darkblue"), border = c("paleturquoise", "navyblue"), lty = c(5, 1), col = c("darkturquoise", "navyblue"), density = c(40, NA), text.col = "plum4", bty = "n")
     }
   }
 
@@ -97,9 +99,12 @@ predDensity <- function(model = NULL, obs = NULL, pred = NULL, separate = TRUE, 
     maxs <- vector("numeric")
     if ("density" %in% names(rslt)) maxs <- c(maxs, max(rslt$density$y))
     if ("histogram" %in% names(rslt)) maxs <- c(maxs, max(rslt$histogram$density))
-    # abline(v = quants, col = "darkgreen")
-    rect(quants[1], 0, quants[2], max(maxs), col = adjustcolor("darkgreen", alpha.f = 0.3), border = NA)
-    abline(v = mean(pred), lwd = 2, col = "darkblue")
+    # abline(v = quants, col = "darkgreen", lty = 2)
+    ci.col <- adjustcolor("darkgreen", alpha.f = 0.3)
+    rect(quants[1], 0, quants[2], max(maxs), col = ci.col, border = NA)
+    abline(v = mean(pred), lwd = 2, col = "darkgreen")
+    # legend(legend.pos, legend = c("CI", "mean"), lty = c(NA, 1), col = c(NA, "darkgreen"), fill = c(ci.col, NA), border = NA, bty = "n")
+    legend(legend.pos, legend = c("CI", "mean"), pch = c(15, NA), pt.cex = c(2, NA), lty = c(NA, 1), lwd = 2, col = c(ci.col, "darkgreen"), bty = "n")
   }
 
   return(rslt)

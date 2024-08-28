@@ -1,5 +1,67 @@
+
+===============================================
+modEvA v3.18.2 (committed 2024-08-28)  ->  CRAN
+===============================================
+
+## Modified functions:
+
+* predDensity
+- slightly improved plot colours for better contrast
+- added legend when CI not NA
+
+
+## Other modified files:
+
+* predDensity.Rd
+- slight improvements to increase clarity
+
+
 ==============================================
-modEvA v3.17 (committed 2024-06-06)
+modEvA v3.18.1 (committed 2024-08-09)
+==============================================
+
+## Modified functions:
+
+* mod2obspred
+- implemented class 'GBMFit' (pkg 'gbm3') when obs.only=FALSE
+
+* predDensity
+- adapted x-axis values for predictors outside range [0, 1] when type="histogram"
+- changed plot colours
+
+
+## Other modified files:
+
+* inputMuch.Rd
+- added mention to class 'GBMFit' for 'model'
+
+* predDensity.Rd
+- added mention to 'predictor' values
+
+
+==============================================
+modEvA v3.18 (committed 2024-08-08)
+==============================================
+
+## Modified functions:
+
+* mod2obspred, varImp
+- implemented class 'GBMFit' from pkg 'gbm3'
+
+
+==============================================
+modEvA v3.17.1 (committed 2024-06-07)
+==============================================
+
+## Modified files:
+
+* varImp.Rd
+- second example now uses new argument 'relative'
+- improved descriptions and Details
+
+
+==============================================
+modEvA v3.17 (committed 2024-06-06)  ->  CRAN
 ==============================================
 
 ## Modified functions:

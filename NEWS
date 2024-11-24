@@ -1,6 +1,51 @@
 
 ===============================================
-modEvA v3.20 (committed 2024-10-28)
+modEvA v3.23 (committed 2024-11-24)  ->  CRAN
+===============================================
+
+* lollipop
+- new argument ylim [to replace ymin, futurely deprecated], default "auto0"
+
+* threshMeasures, similarity
+- change default ymin to 0 when min value is >0, to avoid deceiving plots
+- allow plot=TRUE with simplif=FALSE
+
+* optiThresh, multModEv
+- added plot=FALSE to some threshMeasures() calls
+
+
+===============================================
+modEvA v3.22 (committed 2024-11-19)
+===============================================
+
+## Modified functions:
+
+* varImp
+- new default "auto0" for 'ylim', to avoid deceiving plots
+
+
+===============================================
+modEvA v3.21 (committed 2024-11-19)
+===============================================
+
+## Modified functions:
+
+* predDensity
+- in plot legend, changed "absences" to "background" if pbg = TRUE
+
+* optiThresh
+- added 'reset.par' argument
+- 'sep.plots' argument can be set to NA
+
+* Boyce, Dsquared, errorMeasures, getThreshold, logLike, MillerCalib, optiPair, plotGLM, predPlot, RMSE
+- added 'verbosity' argument and passed it to inputMunch()
+
+* confusionMatrix, getBins, HLfit, predDensity, similarity
+- passed 'verbosity' argument to inputMunch()
+
+
+===============================================
+modEvA v3.20 (committed 2024-10-28)  ->  CRAN
 ===============================================
 
 ## Modified functions:

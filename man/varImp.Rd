@@ -39,7 +39,7 @@ This function computes, and optionally plots, variable importance for an input m
   If the input model is of class "bart" of the \pkg{dbarts} package, or of class "pbart" or "lbart" of the \pkg{BART} package, or a list produced by function "probit_flexBART" of the \pkg{flexBART} package, variable importance is obtained as the mean (if relative=TRUE, the default) or the total number (if relative=FALSE) of regression tree splits where each variable is used. If 'error.bars' is not NA, the error is also computed according to the specified metric ("sd" or standard deviation by default).
   }
 \value{
-  This function outputs, and optionally plots, a named numeric vector of variable importance, as measured by 'imp.type' (see Details). If the model is Bayesian (BART) and 'error.bars' is not NA, the output is a row-named data frame with the mean as well as the lower and upper bounds of the error bars of variable importance.
+  This function outputs, and optionally plots, a named numeric vector of variable importance, as measured by 'imp.type' (see Details). If the model is Bayesian (BART) and 'error.bars' is not NA, the output is a row-named data frame with the mean as well as the lower and upper bounds of the error bars (according to the specified error metric - the default is standard deviation) of variable importance.
 }
 \author{
   A. Marcia Barbosa
@@ -48,7 +48,7 @@ This function computes, and optionally plots, variable importance for an input m
 Weissgerber T.L., Milic N.M., Winham S.J. & Garovic V,D, (2015) Beyond Bar and Line Graphs: Time for a New Data Presentation Paradigm. PLOS Biol 13:e1002128. https://doi.org/10.1371/JOURNAL.PBIO.1002128
 }
 \seealso{
-\code{\link{summary.glm}}; \code{varImp} in package \pkg{caret}; \code{varimp} in package \pkg{embarcadero}; \code{var_importance} in package \pkg{enmpa}; \code{varImportance} in package \pkg{predicts}; \code{bm_VariablesImportance} in package \pkg{biomod2}
+\code{\link{plotCoeffs}}; \code{\link{summary.glm}}; \code{varImp} in package \pkg{caret}; \code{varimp} in package \pkg{embarcadero}; \code{var_importance} in package \pkg{enmpa}; \code{varImportance} in package \pkg{predicts}; \code{bm_VariablesImportance} in package \pkg{biomod2}
 }
 \examples{
   # load sample models:

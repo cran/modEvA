@@ -1,13 +1,129 @@
+===============================================
+modEvA v3.29 (committed 2025-02-14)  ->  CRAN
+===============================================
+
+## Modified functions:
+
+* lollipop (-> varImp, ploCoeffs, threshMeasures, similarity, RsqGLM)
+- removed 'axis.lab' argument for back-compatibility issues
+- improved handling of plot arguments provided under \dots, namely xlab and ylab when horiz is either TRUE or FALSE
+
+
+===============================================
+modEvA v3.28 (committed 2025-02-10)
+===============================================
+
+## Modified functions:
+
+* lollipop
+- better distribution between plot limits when two lollipops
+- renamed argument "horizontal" to "horiz", to match barplot()
+- added 'axis.lab' argument, to use as xlab or ylab depending on 'horiz'
+
+* plotCoeffs
+- added 'labels' argument
+
+* varImp
+- fixed when horizontal = TRUE
+
+* threshMeasures, similarity
+- changed 'las' from 3 to 2
+
+
+===============================================
+modEvA v3.27 (committed 2025-01-28)
+===============================================
+
+## Modified functions:
+
+* lollipop
+- 'bold' default FALSE, not NULL
+
+* plotCoeffs
+- empty plot if no variables in model
+
+
+## Other modified files:
+
+* lollipop.Rd, plotCoeffs.Rd, varImp.Rd
+- improved Description, Examples, and See also
+
+
+===============================================
+modEvA v3.26 (committed 2025-01-27)
+===============================================
+
+## Modified functions:
+
+* lollipop
+- new argument "horizontal"
+- "sticks" can also be a matrix of confidence limits
+
+
+## New functions:
+
+* plotCoeffs
+- uses lollipop() with confidence intervals
+
+
+## Other modified files:
+
+* evaluate.Rd
+- improved definitions of a, b, c, and d, relating with TP, FP, TN, FN
+
+
+===============================================
+modEvA v3.25 (committed 2024-12-27)
+===============================================
+
+## Modified functions:
+
+* AUC
+- new default line colour and diagonal line type
+- xlab closer to axis, to match 2nd line of ylab and fit in default margins
+- values also closer to axes
+
+* Boyce
+- labels and values closer to axes
+- new colours for points and for plot text
+- new position for plot text
+- new symbol (triangle) for red points
+
+* optiPair
+- plot values closer to axes
+- new arguments 'col1' and 'col2' for plot point colours
+
+* optiThresh
+- plot values and axis labels closer to axes
+- new plot arguments 'pch', 'cex' and 'col', with new default colours and symbols
+- plot margins adjusted also when fewer than 4 measures
+- fixed 'xlab' argument, which wasn't being considered
+
+
+===============================================
+modEvA v3.24 (committed 2024-12-18)
+===============================================
+
+## Modified functions:
+
+* MillerCalib
+- changed default line colours to blues
+- lwd = 2 for calibration line
+- intercept in parentheses in plot text
+- help file now mentions Baquero et al.'s thresholds for a good slope
+
 
 ===============================================
 modEvA v3.23 (committed 2024-11-24)  ->  CRAN
 ===============================================
 
+## Modified functions:
+
 * lollipop
 - new argument ylim [to replace ymin, futurely deprecated], default "auto0"
 
 * threshMeasures, similarity
-- change default ymin to 0 when min value is >0, to avoid deceiving plots
+- change default ymin to 0 (default ylim "auto0") when min value is >0, to avoid deceiving plots
 - allow plot=TRUE with simplif=FALSE
 
 * optiThresh, multModEv

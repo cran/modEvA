@@ -4,13 +4,14 @@
 Optimize threshold for model evaluation.
 }
 \description{
-The 'optiThresh' function calculates optimal thresholds for a number of model evaluation measures (see \code{\link{threshMeasures}}). Optimization is given for each measure, and/or for all measures according to particular criteria (e.g. Jimenez-Valverde & Lobo 2007; Liu et al. 2005; Nenzen & Araujo 2011). Results are given numerically and in plots.}
+The 'optiThresh' function computes optimal thresholds for a number of model evaluation measures (see \code{\link{threshMeasures}}). Optimization is given for each measure, and/or for all measures according to particular criteria (e.g. Jimenez-Valverde & Lobo 2007; Liu et al. 2005; Nenzen & Araujo 2011). Results are given numerically and in plots.}
 \usage{
 optiThresh(model = NULL, obs = NULL, pred = NULL, interval = 0.01,
 measures = c(modEvAmethods("threshMeasures"), modEvAmethods("similarity")),
 optimize = modEvAmethods("optiThresh"), simplif = FALSE, pbg = FALSE,
 plot = TRUE, sep.plots = FALSE, reset.par = TRUE, xlab = "Threshold",
-na.rm = TRUE, rm.dup = FALSE, verbosity = 2, ...)
+na.rm = TRUE, rm.dup = FALSE, pch = 20, cex = 0.2, col = "darkblue", 
+verbosity = 2, ...)
 }
 \arguments{
   \item{model}{a binary-response model object of class "glm", "gam", "gbm", "randomForest" or "bart". If this argument is provided, 'obs' and 'pred' will be extracted with \code{\link{mod2obspred}}. Alternatively, you can input the 'obs' and 'pred' arguments instead of 'model'.}
@@ -27,8 +28,11 @@ na.rm = TRUE, rm.dup = FALSE, verbosity = 2, ...)
   \item{xlab}{character vector indicating the label of the x axis.}
   \item{na.rm}{Logical value indicating whether missing values should be ignored in computations. Defaults to TRUE.}
   \item{rm.dup}{If \code{TRUE} and if 'pred' is a SpatRaster and if there are repeated points within the same pixel, a maximum of one point per pixel is used to compute the presences. See examples in \code{\link{ptsrast2obspred}}. The default is FALSE.}
+  \item{pch}{plotting character (symbol), argument to pass to \code{\link{plot}}.}
+  \item{cex}{character expansion (size), argument to pass to \code{\link{plot}}.}
+  \item{col}{colour, argument to pass to \code{\link{plot}}.}
   \item{verbosity}{integer specifying the amount of messages to display. Defaults to the maximum implemented; lower numbers (down to 0) decrease the number of messages.}
-  \item{\dots}{additional arguments to pass to \code{\link{plot}}.}
+  \item{\dots}{additional arguments that can be passed to \code{\link{plot}}.}
 }
 \value{
 This function returns a list with the following components:

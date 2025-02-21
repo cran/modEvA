@@ -1,8 +1,8 @@
-632fc6fbb0d6ff5eba526d473c43ba9a *DESCRIPTION
+1e1e8ed459e53f9ea8927e394fc807ef *DESCRIPTION
 772e2ba94100b61d830ffc671bf5f012 *NAMESPACE
-cf241b85f121a8194fcf317734a6274c *NEWS
-ec6309b118a76411cddf35894c8ac768 *R/AUC.R
-4a9a4c941968c1ee0289df5916b34956 *R/Boyce.R
+b96430316e7a4c39ede9dd0daa94697a *NEWS
+008265d547a0d6a0c68d9fb71c969be1 *R/AUC.R
+40d078f7d101c80ab7a44681f93f1344 *R/Boyce.R
 8d66a4fab4b601c4ea5e90cae19ffba7 *R/Dsquared.R
 5d967cdee0b284247fe73c070c6f14c5 *R/HLfit.R
 ea92435a4c6fc0acc1161e0f71ec7636 *R/MESS.R
@@ -22,12 +22,12 @@ e8dc0a3443b3fb2d25d0650032142c24 *R/evenness.R
 db386df2fd715b6326a485e90fe7dc33 *R/getThreshold.R
 8002053cda6df95f78226fb7f401c643 *R/inputMunch.R
 1e435d657b20b6bd8f5460038392d128 *R/logLike.R
-ff38ba123b978308a6b3f44377c7d6cc *R/lollipop.R
+317f1bbd97e37fdd2bcd60cdd11b3ca4 *R/lollipop.R
 4e18046d811f80c17c46a29e10b8d564 *R/mod2obspred.R
 4f8ee6e3bb81e891cea88df26cd387bd *R/modEvA-internal.R
 0410600176ad338ee69d7323a84ee099 *R/modEvAmethods.R
 73cabe8d868734a6791b0a7da12040ce *R/multModEv.R
-7f3228407c189ee7012cfce4278a6e0a *R/optiPair.R
+d2360598d5277c8852d289784fa912dc *R/optiPair.R
 2af980378eca0a06f8822650c58c0f62 *R/optiThresh.R
 98ca64db0cbd3e228a880f8ecc280535 *R/plotCoeffs.R
 a37323a5519c5df9593a53d40092b43c *R/plotGLM.R
@@ -67,7 +67,7 @@ aab179f05ee80f43a8cd9d42f4b0515c *man/inputMunch.Rd
 00e40bb0998f330d2241146b915f4fac *man/logLike.Rd
 4cf2f95a8953877d7214fc25b9391dde *man/lollipop.Rd
 8b28927c7de623a37ba366c2f2ffc02d *man/mod2obspred.Rd
-a642bf47ea2e1e9fcfd14d86a123ae02 *man/modEvA-package.Rd
+67da72659ea0a008909861ab8fa526ba *man/modEvA-package.Rd
 0d5d1c8d6d524721f35322e6375a3f8f *man/modEvAmethods.Rd
 14c11de8c96a02f1f4c6db6a8b2fdb47 *man/multModEv.Rd
 674500fe3eb2ff73393a4567bd8dd62b *man/optiPair.Rd

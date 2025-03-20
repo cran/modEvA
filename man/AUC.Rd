@@ -8,11 +8,11 @@ This function calculates the Area Under the Curve of the receiver operating char
 }
 \usage{
 AUC(model = NULL, obs = NULL, pred = NULL, simplif = FALSE,
-interval = 0.01, FPR.limits = c(0, 1), curve = "ROC", pbg = FALSE,
+interval = "auto", FPR.limits = c(0, 1), curve = "ROC", pbg = FALSE,
 method = NULL, plot = TRUE, diag = TRUE, diag.col = "lightblue3",
 diag.lty = 2, curve.col = "darkblue", curve.lty = 1, curve.lwd = 2,
 plot.values = TRUE, plot.digits = 3, plot.preds = FALSE,
-grid = FALSE, grid.lty = 1, xlab = "auto", ylab = "auto",
+grid = FALSE, grid.lty = 1, xlab = "auto", ylab = "auto", cex.lab = 0.9,
 ticks = FALSE, na.rm = TRUE, rm.dup = FALSE, verbosity = 2, ...)
 }
 \arguments{
@@ -23,8 +23,8 @@ ticks = FALSE, na.rm = TRUE, rm.dup = FALSE, verbosity = 2, ...)
   \item{FPR.limits}{(NOT YET IMPLEMENTED) numerical vector of length 2 indicating the limits of false positive rate between which to calculate a partial AUC. The default is c(0, 1), for considering the whole AUC. Pending implementation. Meanwhile, you can try e.g. the \code{roc} function in the \pkg{pROC} package.}
   \item{curve}{character indicating whether to compute the "ROC" (receiver operating charateristic) or the "PR" (precision-recall) curve.}
   \item{pbg}{logical value to pass to \code{\link{inputMunch}} indicating whether to use presence/background (rather than presence/absence) data. Default FALSE.}
-  \item{interval}{interval of threshold values at which to calculate the true and false positive rates. Defaults to 0.01 for relatively quick while still relatively accurate computation. Note that, if method = "rank" (the default if curve = "ROC"), this does not affect the obtained AUC value (although it can affect the size of the plotted curve, especially when prevalence is low), as the AUC is calculated with the Mann-Whitney-Wilcoxon statistic and is therefore threshold-independent. If method != "rank" (or, by extension, if curve = "PR" -- see 'method' argument), setting 'interval' to smaller values will provide more accurate AUC values. The size of the 'interval' also affects the resulting 'meanPrecision', as this is averaged across all threshold values.}
-  \item{method}{character indicating with which method to calculate the AUC value. Available options are "rank" (the default and most accurate, but implemented only if curve = "ROC") and "trapezoid" (the default if curve = "PR"). The latter is computed more accurately if 'interval' is decreased (see 'interval' argument).}
+  \item{interval}{interval of threshold values at which to compute and plot the true- and false-positive rates. Can be a (preferably small) numeric value between 0 and 1; or the new default "auto", which will be either 0.01 (old default) or 0.001, depending on whether 'pred' does or doesn't have values in all thirds of the [0, 1] range. Larger intervals provide faster computation, but may generate innacurate curves especially if 'pred' has too few values towards one of the extremes (e.g. towards 1). Note that, if method = "rank" (the default if curve = "ROC"), 'interval' does not affect the obtained AUC value (although it can visually affect the size of the plotted curve, especially when there are very few 'pred' values towards 0 or towards 1), as the AUC is calculated with the Mann-Whitney-Wilcoxon statistic and is therefore threshold-independent. If method != "rank" (or, by extension, if curve = "PR" -- see 'method' argument), smaller 'interval' values will provide more accurate AUC values. Smaller 'interval' values also improve the output 'meanPrecision', as this is averaged across all threshold values.}
+  \item{method}{character indicating with which method to calculate the AUC value. Available options are "rank" (the default and most accurate, but implemented only if curve = "ROC") and "trapezoid" (the default if curve = "PR"). The latter may be computed more accurately if 'interval' is smaller (see 'interval' argument).}
   \item{plot}{logical, whether or not to plot the curve. Defaults to TRUE.}
   \item{diag}{logical, whether or not to add the reference diagonal (if plot = TRUE). Defaults to TRUE.}
   \item{diag.col}{line colour for the reference diagonal (if diag = TRUE).}
@@ -39,6 +39,7 @@ ticks = FALSE, na.rm = TRUE, rm.dup = FALSE, verbosity = 2, ...)
     \item{grid.lty}{line type for the grid (if grid = TRUE).}
   \item{xlab}{label for the x axis. By default, a label is automatically generated according to the specified 'curve'.}
   \item{ylab}{label for the y axis. By default, a label is automatically generated according to the specified 'curve'.}
+  \item{cex.lab}{'cex' (amount by which the text should be magnified) for the axis labels. Default 0.9.}
   \item{ticks}{logical, whether or not to add blue tick marks at the bottom of the plot to mark the thresholds at which there were values from which to to draw the curve. Defaults to FALSE.}
   \item{na.rm}{Logical value indicating if missing values should be ignored in computations. The default is TRUE.}
   \item{rm.dup}{If \code{TRUE} and if 'pred' is a SpatRaster and if there are repeated points within the same pixel, a maximum of one point per pixel is used to compute the presences. See examples in \code{\link{ptsrast2obspred}}. The default is FALSE.}

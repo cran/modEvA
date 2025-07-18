@@ -1,19 +1,120 @@
+# Version 3.39
+## (Committed 2025-07-03) -> CRAN
+
+### Modified functions:
+
+* MillerCalib
+    - plot values: replace "slope - 1" with "slopeDiff"
+    - include 'slopeDiff' in output
+
+
+### Other modified files:
+
+* varImp.Rd
+    - mention Shapley values in See Also
+    
+
+# Version 3.38
+## (Committed 2025-06-29)
+
+### Modified functions:
+
+* MillerCalib
+    - move intercept value on plot back to just after slope
+    
+* pseudoRsq
+    - improved Tjur NA message, and show it only when verbosity > 1
+
+
+### Other modified files:
+
+* RsqGLM.Rd, pseudoRsq.Rd
+    - removed duplicated info to avoid future mismatches; slightly improved text
+
+
+# Version 3.37
+## (Committed 2025-06-21)
+
+### Modified functions:
+
+* varImp
+    - replaced instances of methods::is() with inherits()
+    - check if class 'Gam' or 'gam', in which case 'imp.type' automatically set to 'permutation' (as 'maxnet' already did)
+    - warning (not just message if verbosity) when 'imp.type' automatically changed
+    - changed 'col' argument defaults to named colours
+    - help file mentions 'Gam' and 'gam' classes also implemented
+
+* mod2obspred
+    - replaced instances of methods::is() with inherits()
+
+* prevalence
+    - replaced  if (!is(obs, "vector") && !is(obs, "factor"))  with  if (!is.vector(obs) && !is.factor(obs))  to remove dependency on {methods}
+
+
+### Other modified files:
+
+* NAMESPACE
+    - removed importFrom("methods", "is")
+
+* DESCRIPTION
+    - removed "methods" from Imports 
+
+
+# Version 3.36
+## (Committed 2025-06-09)
+
+### Modified functions:
+
+* RsqGLM
+    - renamed to pseudoRsq
+
+* MillerCalib
+    - changed colour of slope-1 value on plot, from red (too dramatic) to dark red
+    - moved slope-1 value on plot to just after slope, before intercept
+
+* optiThresh
+    - added '...' which was missing in 'plot(all.thresholds, )'
+
+
+# Version 3.35
+## (Committed 2025-05-12)
+
+### Modified functions:
+
+* confusionLabel
+    - vector output now also ordered factor rather than character (as for raster inputs)
+
+
+### Other modified files:
+
+* AUC.Rd
+    - mention Swets AUC-ROC interpretation thresholds
+
+* RsqGLM.Rd
+- mention McFadden R-squared interpretation thresholds
+
+* threshMeasures.Rd
+    - mention prevalence dependence and add reference on TSS
+
+* VarImp.Rd
+    - mention {vip} and other packages in See Also and References
+
 
 # Version 3.34
 ## (Committed 2025-04-29) -> CRAN
 
 ### Modified functions:
 
-* MillerCalib
-    - plot text now grey for intercept
-    - plot text now includes 1-slope (in red)
-    
 * confusionLabel
     - reordered output categories, low to high rather than alphabetical
     - removed colour table for rasters
     
 * RsqGLM
     - implemented for raster inputs
+
+* MillerCalib
+    - plot text now grey for intercept
+    - plot text now includes 1-slope (in red)
     
 
 

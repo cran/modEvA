@@ -1,3 +1,18 @@
+# Version 3.40 -> CRAN
+## (Committed 2025-09-19)
+
+### Modified functions:
+
+* varImp
+    - add required 'n.trees' and 'newdata' args to predict() call for GBM models
+
+* Boyce
+    - move 'r <-' upward to fix bug for edge cases with very few unique pred values
+
+* evaluate (benefiting threshMeasures)
+    - convert a, b, c and d to numeric, to avoid integer overflow when large numbers (seen in https://github.com/benjjneb/dada2/issues/1747#issuecomment-1579180381)
+
+
 # Version 3.39
 ## (Committed 2025-07-03) -> CRAN
 
@@ -5,7 +20,7 @@
 
 * MillerCalib
     - plot values: replace "slope - 1" with "slopeDiff"
-    - include 'slopeDiff' in output
+    - include 'slopeDiff' in console output
 
 
 ### Other modified files:

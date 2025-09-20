@@ -1,8 +1,8 @@
-65c298caa35a62c919233f2507025709 *DESCRIPTION
+0ecb7d8bb9dfc06085ba0ef18283de24 *DESCRIPTION
 7d0263424096fad1b381e4e8956ea63c *NAMESPACE
-cdd82181c71dfa42eaa34c7a47d9364b *NEWS.md
+0fa12775819a4f0e487794720edfa3a5 *NEWS.md
 088110fdb4a87ab9d78a952e2d628d71 *R/AUC.R
-40d078f7d101c80ab7a44681f93f1344 *R/Boyce.R
+afe23d7eb9afcb9ed3011f1f4e8203b3 *R/Boyce.R
 9d1695fe072b19cda845f8386d8d34e9 *R/Dsquared.R
 5d967cdee0b284247fe73c070c6f14c5 *R/HLfit.R
 ea92435a4c6fc0acc1161e0f71ec7636 *R/MESS.R
@@ -15,7 +15,7 @@ e585bbe07eee24e12070b1c3e43352fc *R/arrangePlots.R
 810c92429c27ef08d329ad517feba41c *R/confusionLabel.R
 7cd184e81e6725625c392a843f426f97 *R/confusionMatrix.R
 0d64a4bee54528516c35c81eb9eaa953 *R/errorMeasures.R
-ed1ca1dcffde7a558bde9a107b4316d1 *R/evaluate.R
+06dfe04c08770fa212d155d6b57d2058 *R/evaluate.R
 e8dc0a3443b3fb2d25d0650032142c24 *R/evenness.R
 5be52ea5f22a83f329efb25f6c8d1a0c *R/getBins.R
 4d61b66ac00527ae21ad94e890c7152a *R/getModEqn.R
@@ -41,7 +41,7 @@ e7be6628f9a800be3842dad753f67f92 *R/quantReclass.R
 02352025df1c8b610f338648e3f7c91e *R/similarity.R
 8697aec0468848fac62437ce7457f845 *R/standard01.R
 eb3bb3d71a10b493c4d4069d6e072fc8 *R/threshMeasures.R
-c8a13c119a5cbee0070e6ed6dce7ba03 *R/varImp.R
+6e6837f98df64cdcb0356a653311a731 *R/varImp.R
 2f63c3480fc137415062d4aa55fce25b *R/varPart.R
 c7b048ac2d773e043922da4dc30e3d38 *data/rotif.mods.rda
 4ed690971cc4bf3ea7a4b3b1e685c6c5 *inst/CITATION
@@ -68,7 +68,7 @@ aab179f05ee80f43a8cd9d42f4b0515c *man/inputMunch.Rd
 00e40bb0998f330d2241146b915f4fac *man/logLike.Rd
 19db1bb854307a1b4285b05223bde867 *man/lollipop.Rd
 9de3b37654544efa69ebce2a1e4208fd *man/mod2obspred.Rd
-47d1489e9bd2cd7b2740c46cf610cc0c *man/modEvA-package.Rd
+fc4e4a36c67bf77cdfc59260ada73bae *man/modEvA-package.Rd
 0d5d1c8d6d524721f35322e6375a3f8f *man/modEvAmethods.Rd
 14c11de8c96a02f1f4c6db6a8b2fdb47 *man/multModEv.Rd
 e66d14c89e5a290e82fb44d74bed9cee *man/optiPair.Rd

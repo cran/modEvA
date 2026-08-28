@@ -1,8 +1,8 @@
 Package: modEvA
 Type: Package
 Title: Model Evaluation and Analysis
-Version: 3.45
-Date: 2026-05-21
+Version: 3.46
+Date: 2026-08-04
 Authors@R: c(person(given = c("A.", "Marcia"),
                       family = "Barbosa",
                       role = c("aut", "cre"),
@@ -46,7 +46,7 @@ License: GPL-3
 URL: http://modeva.r-forge.r-project.org/
 BugReports: https://github.com/AMBarbosa/modEvA/issues
 NeedsCompilation: no
-Packaged: 2026-05-21 20:16:39 UTC; marcia
+Packaged: 2026-08-28 11:29:21 UTC; marcia
 Author: A. Marcia Barbosa [aut, cre],
   Jennifer A. Brown [aut],
   Alberto Jimenez-Valverde [aut],
@@ -60,4 +60,4 @@ Author: A. Marcia Barbosa [aut, cre],
   Jose Carlos Guerrero [fnd]
 Depends: R (>= 2.10)
 Repository: CRAN
-Date/Publication: 2026-05-21 21:50:11 UTC
+Date/Publication: 2026-08-28 12:20:08 UTC

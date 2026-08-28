@@ -1,10 +1,10 @@
-0982e1a7618b25ce1386670a64bc8083 *DESCRIPTION
+8f8ab391faeadebe225aa0f5cca21036 *DESCRIPTION
 71e61cb63afbbbd1c2a677a580d90c3a *NAMESPACE
-72176e54b7aa0ea7a986332550a62717 *NEWS.md
+6d0cb8065e8d1159fd7132244bafcdd5 *NEWS.md
 cebff2492f656424987118bc4f256f87 *R/AUC.R
 5308b83cd2d8890e97229ac74fb3a1e9 *R/Boyce.R
 9d1695fe072b19cda845f8386d8d34e9 *R/Dsquared.R
-8a0f44bcc58e8f12370d830fb9a562c5 *R/HLfit.R
+def280dadb2836d52eea7c4ea0c1d7c0 *R/HLfit.R
 ea92435a4c6fc0acc1161e0f71ec7636 *R/MESS.R
 fbdcbf6378aa04ae72171fbfe9bb62db *R/Miller.R
 8db728686b1faf94986ff2cf258be5ed *R/MillerCalib.R
@@ -30,7 +30,7 @@ e0a0c9a5db94119b29fe1edfd6283c7d *R/mod2obspred.R
 ac44a10057f632d83c19e7edaaa8d9a8 *R/multModEv.R
 28a71be67cfb80774397299691a76f3a *R/optiPair.R
 c94a1ffe095f843d7a9c1d1e8a83c050 *R/optiThresh.R
-aaa4d0dd10675068a560bab40a2558c7 *R/plotCoeffs.R
+b50d9060070460fa85337934875d6400 *R/plotCoeffs.R
 781cb2ddb5450038508478621c3a7567 *R/plotGLM.R
 d57aa01f213aa1856bdf8c6d96daf4aa *R/poMeasures.R
 e2d899f2678bbb900d2c4fcc4bcd1d77 *R/predDensity.R
@@ -43,7 +43,7 @@ e7be6628f9a800be3842dad753f67f92 *R/quantReclass.R
 02352025df1c8b610f338648e3f7c91e *R/similarity.R
 8697aec0468848fac62437ce7457f845 *R/standard01.R
 34937805aee12d276c7e8db3a36221ed *R/threshMeasures.R
-6e6837f98df64cdcb0356a653311a731 *R/varImp.R
+07952e0a12d8c74e84209ec1b7494379 *R/varImp.R
 2f63c3480fc137415062d4aa55fce25b *R/varPart.R
 127221efc10e7c860585f2744e2a68e0 *data/rotif.mods.rda
 e0d5eac6d0872bd71c068970acb1c5d9 *inst/CITATION
@@ -52,7 +52,7 @@ e0d5eac6d0872bd71c068970acb1c5d9 *inst/CITATION
 346a1b222865923b4e1b32fb9f880fb6 *man/Dsquared.Rd
 7a727ff5fb0fb47d46124a8d76eac673 *man/HLfit.Rd
 c05c6c38e7f183f4d2617e064e9108aa *man/MESS.Rd
-125b4821d355b1b5e0501665cb401c1f *man/Miller.Rd
+ca647b7d37d6b8625c1a58dfe831dc62 *man/Miller.Rd
 082a14d3f130d4e0abfa0bbb83f760d0 *man/MillerCalib.Rd
 2b76344b6ab33b91ee75096ca6aacb2c *man/OA.Rd
 1d9e10636d75be65342e44f673503360 *man/RMSE.Rd
@@ -70,13 +70,13 @@ ff673585f34b3c7c5a35738d4d7a89ee *man/evenness.Rd
 741e5f3b89f08bbc83b8511bb712711a *man/inputMunch.Rd
 7e6df17757238214b5eff9bf3db6ab90 *man/logLike.Rd
 fc0a647f78f5fb89b498cb279acfbb06 *man/lollipop.Rd
-9de3b37654544efa69ebce2a1e4208fd *man/mod2obspred.Rd
-2d47a5d290840756e9550cada203305f *man/modEvA-package.Rd
+6c9c038032550f2626b590617b1e4fdd *man/mod2obspred.Rd
+737188554ca48e67a4a04b91042ca1d7 *man/modEvA-package.Rd
 0d5d1c8d6d524721f35322e6375a3f8f *man/modEvAmethods.Rd
 f689fea092872cf9f63466ca423c79cf *man/multModEv.Rd
 cbfa8cde51fadbddf9cb889f8399d719 *man/optiPair.Rd
 9050de0422dd693bbbd77e4c66fddf10 *man/optiThresh.Rd
-d026b34693f8192f5694ee414fd0633e *man/plotCoeffs.Rd
+8454a6c73e411dc47d7dcdf79da4221c *man/plotCoeffs.Rd
 d2de7b323cd8c989c9e58d1d5a0a0324 *man/plotGLM.Rd
 6ed42eb849f5b777ffa7ce2428da921e *man/poMeasures.Rd
 f1a1458417c7b09f624b2ecb428b530e *man/predDensity.Rd
@@ -89,6 +89,6 @@ c51c8d9968e4e9be4e9ec48d94614ddf *man/range01.Rd
 5a0bd4b5241f7c81bd315d0ad70b073b *man/rotif.mods.Rd
 cc6646964bf1e471d75da99b9f0cdb7c *man/similarity.Rd
 740bf479d111eb37e0a4294b021a9ddb *man/standard01.Rd
-ae235a941df6bf46988421ad291757bd *man/threshMeasures.Rd
-5311f7179f9cc07f276063d442facbd3 *man/varImp.Rd
+0cd3fa370a8da84ebe703870d63bcb7c *man/threshMeasures.Rd
+2a6160e100302e387aa932efd98ecff5 *man/varImp.Rd
 2aa048c62aa01fbbcd582366d3aaf7d9 *man/varPart.Rd
